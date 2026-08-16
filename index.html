@@ -1,55 +1,149 @@
- html>
-<html lang="en<!DOCTYPE">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HeartWords - Poetry for Your Emotions</title>
 <style>
-  body {
-    font-family: 'Georgia', serif;
-    background: linear-gradient(to bottom, #2c3e50, #1a1a2e);
-    color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-  }
- .container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    padding: 30px;
-    border-radius: 16px;
-    max-width: 600px;
-    width: 100%;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  }
-  h1 { text-align: center; color: #e0b3ff; }
- .emotions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 20px 0; }
- .emotion-btn {
-    background: #4a3f69; border: none; color: white; padding: 10px 18px;
-    border-radius: 20px; cursor: pointer; transition: 0.3s;
-  }
- .emotion-btn:hover,.emotion-btn.active { background: #9b59b6; }
-  textarea {
-    width: 100%; height: 100px; background: rgba(0,0,0,0.3);
-    border: 1px solid #555; border-radius: 8px; color: white; padding: 10px;
-    font-family: inherit; resize: none;
-  }
-  button {
-    width: 100%; padding: 12px; margin-top: 10px;
-    background: #8e44ad; border: none; color: white; font-size: 16px;
-    border-radius: 8px; cursor: pointer;
-  }
-  button.secondary { background: #34495e; }
-  #poemOutput {
-    margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.2);
-    border-left: 3px solid #9b59b6; white-space: pre-wrap; font-style: italic;
-  }
-  #prompt { margin-top: 15px; font-size: 14px; color: #ccc; }
+body{font-family:Georgia;background:linear-gradient(#2c3e50,#1a1a2e);color:#fff;display:flex;justify-content:center;padding:20px;min-height:100vh;margin:0}
+.container{background:rgba(255,255,255,.05);padding:30px;border-radius:16px;max-width:600px;width:100%;backdrop-filter:blur(10px)}
+h1{text-align:center;color:#e0b3ff}
+.emotions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+.emotion-btn{background:#4a3f69;border:2px solid transparent;color:#fff;padding:10px 18px;border-radius:20px;cursor:pointer}
+.emotion-btn.active{background:#9b59b6;border-color:#e0b3ff}
+input,textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid #555;border-radius:8px;color:#fff;padding:12px;margin-top:10px;box-sizing:border-box;font-family:inherit}
+button{width:100%;padding:12px;margin-top:15px;background:#8e44ad;border:none;color:#fff;font-size:16px;border-radius:8px;cursor:pointer}
+button:hover{background:#9b59b6}
+#poemOutput{margin-top:25px;padding:20px;background:rgba(0,0,0,.2);border-left:3px solid #9b59b6;white-space:pre-wrap;font-style:italic;display:none}
+.poem-actions{display:flex;gap:10px;margin-top:10px}
+.like-btn{background:transparent;border:1px solid #e0b3ff;color:#e0b3ff;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:14px;width:auto}
+.like-btn.liked{background:#e0b3ff;color:#1a1a2e}
+.copy-btn{background:transparent;border:1px solid #9b59b6;color:#9b59b6;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:14px;width:auto}
+label{font-size:14px;color:#ccc;margin-top:15px;display:block}
+.music-control{text-align:center;margin-top:10px;font-size:12px}
+.music-control button{background:transparent;border:1px solid #9b59b6;padding:6px 12px;font-size:12px;width:auto}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>HeartWords</h1>
+<p style="text-align:center">Turn what’s in your chest into words</p>
 
-  /* Breathing Circle */
-  #breathBox { display:none; text-align:center; margin-top:20px; }
- .circle {
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/24/audio_d1716ae216.mp3" type="audio/mpeg">
+</audio>
+<div class="music-control">
+  <button id="musicBtn">🔊 Music: ON</button>
+</div>
+
+<label>1. How do you feel? Pick one or type your own</label>
+<div class="emotions">
+<button class="emotion-btn" data-emotion="grief">Grief</button>
+<button class="emotion-btn" data-emotion="love">Love</button>
+<button class="emotion-btn" data-emotion="longing">Longing</button>
+<button class="emotion-btn" data-emotion="peace">Peace</button>
+<button class="emotion-btn" data-emotion="anger">Anger</button>
+<button class="emotion-btn" data-emotion="hope">Hope</button>
+</div>
+<input type="text" id="customEmotion" placeholder="Or type your own feeling: anxious, numb, proud...">
+
+<label>2. What memory or word is on your mind?</label>
+<textarea id="memory" placeholder="Her name, that night, goodbye..."></textarea>
+
+<button id="generate">Turn it into a poem</button>
+<div id="poemOutput"></div>
+</div>
+
+<script>
+let selectedEmotion = "";
+let currentPoem = "";
+let likeCount = localStorage.getItem('heartwordsLikes') || 0;
+
+const music = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+let musicStarted = false;
+function startMusic(){
+  if(!musicStarted){
+    music.volume = 0.3;
+    music.play().catch(()=>{});
+    musicStarted = true;
+  }
+}
+document.addEventListener('click', startMusic, {once:true});
+
+musicBtn.onclick = () => {
+  if(music.paused){
+    music.play();
+    musicBtn.innerText = "🔊 Music: ON";
+  } else {
+    music.pause();
+    musicBtn.innerText = "🔇 Music: OFF";
+  }
+}
+
+document.querySelectorAll('.emotion-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedEmotion = btn.dataset.emotion;
+    document.getElementById('customEmotion').value = "";
+    startMusic();
+  });
+});
+
+document.getElementById('customEmotion').addEventListener('input', () => {
+  document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
+  selectedEmotion = document.getElementById('customEmotion').value.trim();
+});
+
+const poemTemplates = {
+  grief: (w) => `My chest closes\nwhen ${w} floods my mind.\nI reach for your laugh\nbut only echo answers.\nIs this grief?\nOr love that forgot how to leave?`,
+  love: (w) => `Is this love?\nThe way ${w}\nsettles deep in my bones\nand makes the world quiet.\nA blessing...\nOr a beautiful curse.`,
+  longing: (w) => `I still remember\nthe sound of ${w}.\nIt lingers in my mind\neven though we’re no longer the same.\nMy heart waits\nin the space you left.`,
+  peace: (w) => `Tonight I set down ${w}.\nI let the moon hold it for me.\nMy breath comes easier now.\nMaybe healing\nis just learning\nto love without drowning.`,
+  anger: (w) => `I’m carrying ${w}\nlike fire in my throat.\nI wanted softness\nbut got sharp edges instead.\nSo I breathe it out\nand let it burn clean.`,
+  hope: (w) => `Even with ${w} here,\nI’m still looking up.\nBecause hearts like mine\nlearn to bloom\nin the middle of storms.`
+};
+
+document.getElementById('generate').addEventListener('click', () => {
+  startMusic();
+  const word = document.getElementById('memory').value.trim() || "you";
+  let emotion = selectedEmotion;
+  
+  if (!emotion) { alert("Please pick or type how you feel first"); return; }
+
+  if(poemTemplates[emotion.toLowerCase()]){
+    currentPoem = poemTemplates[emotion.toLowerCase()](word);
+  } else {
+    currentPoem = `This is ${emotion}.\nIt sits heavy with ${word}\nin the quiet parts of me.\nI don’t have all the words yet,\nbut I’m learning to feel them.\nOne breath,\nOne line,\nOne truth at a time.`;
+  }
+  
+  const output = document.getElementById('poemOutput');
+  output.style.display = 'block';
+  output.innerHTML = `
+    ${currentPoem}
+    <div class="poem-actions">
+      <button class="like-btn" id="likeBtn">❤️ Like <span id="likeCount">${likeCount}</span></button>
+      <button class="copy-btn" id="copyBtn">📋 Copy</button>
+    </div>
+  `;
+
+  // Like button logic
+  document.getElementById('likeBtn').onclick = () => {
+    likeCount++;
+    localStorage.setItem('heartwordsLikes', likeCount);
+    document.getElementById('likeCount').innerText = likeCount;
+    document.getElementById('likeBtn').classList.add('liked');
+    document.getElementById('likeBtn').innerText = `❤️ Liked ${likeCount}`;
+  }
+
+  // Copy button logic
+  document.getElementById('copyBtn').onclick = () => {
+    navigator.clipboard.writeText(currentPoem);
+    document.getElementById('copyBtn').innerText = "✓ Copied!";
+    setTimeout(()=>document.getElementById('copyBtn').innerText = "📋 Copy", 1500);
+  }
+});
+</script>
+</body></html>
    
