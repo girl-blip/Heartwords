@@ -7,64 +7,34 @@
 <style>
   :root { --pink: #ff9ecb; --dark-pink: #e91e63; --gold: #FFD700; --bg: #fff5f9; }
     * { box-sizing: border-box; }
-  body { font-family: 'Poppins', Arial, sans-serif; background: var(--bg); margin: 0; color: #333; transition: background 1s; }
-
-  /* #1 OPENING SCREEN FROM NEW */
-  #welcome { position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(180deg, #fff5f9, #ffe0eb); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; text-align:center; padding:20px; }
-  #welcome h1 { font-size: 3em; margin:0; }
-  #welcome p { font-style: italic; font-size: 1.2em; margin: 10px 0 30px; }
- .enter-btn { background: var(--dark-pink); color:white; padding: 14px 30px; border-radius: 25px; border:none; font-size:1.1em; cursor:pointer; }
-
+  body { font-family: 'Poppins', Arial, sans-serif; background: var(--bg); margin: 0; color: #333; }
   header { background: linear-gradient(135deg, var(--pink), var(--dark-pink)); color: white; text-align: center; padding: 30px 20px; position: relative; }
  .premium-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-.container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
-.tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.tab { padding: 10px 20px; border: 2px solid var(--dark-pink); border-radius: 20px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
-.tab.active { background: var(--dark-pink); color: white; }
-
-  /* OLD POEM CARD + NEW FADE */
-.poem-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(233,30,99,0.1); position: relative; }
-.poem-title { color: var(--dark-pink); font-size: 1.4em; margin: 0 0 5px; }
-.poem-author { color: #888; font-style: italic; margin-bottom: 15px; }
-.poem-text { white-space: pre-line; line-height: 1.8; }
-.poem-line { opacity: 0; animation: fadeIn 0.8s forwards; } /* NEW #5 */
-  @keyframes fadeIn { to { opacity: 1; } }
-
-.heart-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; cursor: pointer; color: #ddd; }
-.heart-btn.active { color: var(--dark-pink); }
-
-.word { cursor: pointer; padding: 2px 4px; border-radius: 4px; }
-.word:hover { background: #ffe0eb; }
-
-.section { display: none; }
-.section.active { display: block; }
-.empty { text-align: center; color: #999; padding: 50px 20px; }
-
+ .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
+ .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+ .tab { padding: 10px 20px; border: 2px solid var(--dark-pink); border-radius: 20px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
+ .tab.active { background: var(--dark-pink); color: white; }
+ .poem-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(233,30,99,0.1); position: relative; }
+ .poem-title { color: var(--dark-pink); font-size: 1.4em; margin: 0 0 5px; }
+ .poem-text { white-space: pre-line; line-height: 1.8; }
+ .heart-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; cursor: pointer; color: #ddd; }
+ .heart-btn.active { color: var(--dark-pink); }
+ .section { display: none; }
+ .section.active { display: block; }
+ .empty { text-align: center; color: #999; padding: 50px 20px; }
   textarea, input, select { width: 100%; padding: 12px; border: 2px solid #ffd6e8; border-radius: 8px; margin-bottom: 10px; }
-.btn { background: var(--dark-pink); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
-.btn.premium { background: var(--gold); color: #000; }
-.btn.voice { background: #9c27b0; }
-.btn.picture { background: #9c27b0; }
-.btn.dontknow { background: #6c5ce7; width: 100%; } /* NEW */
-.btn.surprise { background: #00b894; } /* NEW */
+ .btn { background: var(--dark-pink); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
 
-  /* OLD CHAT + NEW EMOTION MAP */
-.chat-box { background: white; border-radius: 15px; padding: 15px; height: 400px; display: flex; flex-direction: column; }
-.chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #fff0f5; border-radius: 10px; margin-bottom: 10px; }
-.chat-msg { background: #ffe0eb; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; }
-
-.emotion-map { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; } /* NEW */
-.emotion-group { background: white; padding: 20px; border-radius: 15px; min-width: 200px; }
+  /* REAL CHAT STYLES */
+ .chat-box { background: white; border-radius: 15px; padding: 15px; height: 500px; display: flex; flex-direction: column; }
+ .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #fff0f5; border-radius: 10px; margin-bottom: 10px; }
+ .chat-msg { background: #ffe0eb; padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; max-width: 80%; }
+ .chat-msg.you { background: var(--dark-pink); color: white; margin-left: auto; }
+ .chat-input { display: flex; gap: 10px; }
+ .online-dot { width: 8px; height: 8px; background: #00b894; border-radius: 50%; display: inline-block; margin-right: 5px; }
 </style>
 </head>
 <body>
-
-<!-- NEW #1 OPENING SCREEN -->
-<div id="welcome">
-  <h1>HEARTWORDS</h1>
-  <p>Some feelings were never meant to stay unspoken.</p>
-  <button class="enter-btn" onclick="document.getElementById('welcome').style.display='none'">enter quietly →</button>
-</div>
 
 <header>
   <div class="premium-badge">PREMIUM ✨</div>
@@ -73,156 +43,108 @@
 </header>
 
 <div class="container">
-  <!-- ALL TABS: OLD + NEW -->
   <div class="tabs">
     <div class="tab active" onclick="showTab('poems', this)">Poems</div>
     <div class="tab" onclick="showTab('write', this)">Write</div>
-    <div class="tab" onclick="showTab('worlds', this)">Worlds</div>
-    <div class="tab" onclick="showTab('archive', this)">Archive</div>
-    <div class="tab" onclick="showTab('emotion', this)">Emotion Map</div>
-    <div class="tab" onclick="showTab('letter', this)">Letter</div>
     <div class="tab" onclick="showTab('heartwords', this)">❤️ Heartwords</div>
-    <div class="tab" onclick="showTab('confess', this)">💌 Confessions</div>
-    <div class="tab" onclick="showTab('chat', this)">💬 Chat</div>
+    <div class="tab" onclick="showTab('chat', this)">💬 Live Chat</div>
   </div>
 
-  <!-- OLD POEMS TAB -->
   <div id="poems" class="section active">
-    <button class="btn surprise" onclick="surpriseMe()">🎲 Surprise me</button> <!-- NEW -->
-    <button class="btn dontknow" onclick="iDontKnow()">I DON'T KNOW WHAT I'M FEELING</button> <!-- NEW -->
-    <select id="categorySelect" onchange="filterByCategory()" style="margin:20px 0;">
-      <option value="all">All Categories</option>
-      <option value="love">Love</option><option value="grief">Grief</option>
-      <option value="healing">Healing</option><option value="cute">Cute</option><option value="motor">Motor</option>
-    </select>
-    <div id="poemsGrid"></div>
+    <div id="poemsGrid">Loading...</div>
   </div>
 
-  <!-- OLD WRITE TAB -->
   <div id="write" class="section">
     <h2>Write a Poem</h2>
     <input type="text" id="title" placeholder="Poem Title">
-    <input type="text" id="author" placeholder="Your Name">
-    <select id="poemCategory">
-      <option value="love">Love</option><option value="grief">Grief</option>
-      <option value="healing">Healing</option><option value="cute">Cute</option><option value="motor">Motor</option>
-    </select>
     <textarea id="text" rows="6" placeholder="Write your poem here..."></textarea>
     <button class="btn" onclick="addPoem()">Publish</button>
   </div>
 
-  <!-- NEW WORLDS TAB -->
-  <div id="worlds" class="section">
-    <h2>Explore by Feeling</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;">
-      <div class="poem-card" onclick="filterByCategory('love')"><h3>LOVE</h3><p>For the feelings you couldn't quite name.</p></div>
-      <div class="poem-card" onclick="filterByCategory('grief')"><h3>GRIEF</h3><p>For endings that don't always have funerals.</p></div>
-      <div class="poem-card" onclick="filterByCategory('healing')"><h3>HOPE</h3><p>For the tiny part of you that still believes.</p></div>
-    </div>
-  </div>
-
-  <!-- NEW ARCHIVE TAB -->
-  <div id="archive" class="section">
-    <h2>THE ARCHIVE</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;">
-      <div class="poem-card"><h4>🌙 Midnight</h4></div>
-      <div class="poem-card"><h4>💌 Unsent</h4></div>
-      <div class="poem-card"><h4>🌱 Becoming</h4></div>
-    </div>
-  </div>
-
-  <!-- NEW EMOTION MAP -->
-  <div id="emotion" class="section">
-    <h2>What are you feeling?</h2>
-    <div class="emotion-map">
-      <div class="emotion-group"><h4>Sad</h4>
-        <button class="btn" onclick="addFeeling('lonely')">lonely</button>
-        <button class="btn" onclick="addFeeling('nostalgic')">nostalgic</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- NEW LETTER TAB -->
-  <div id="letter" class="section">
-    <h2>Dear Me,</h2>
-    <button class="btn" onclick="setLetter('To the younger me...')">To the younger me...</button>
-    <textarea id="letterText" rows="6"></textarea>
-    <button class="btn" onclick="alert('Saved ❤️')">Save Letter</button>
-  </div>
-
-  <!-- OLD HEARTWORDS TAB -->
   <div id="heartwords" class="section">
     <h2>Your Heartwords</h2>
-    <button class="btn premium" onclick="alert('PREMIUM EXPORT')">📥 Export Premium PDF</button>
     <div id="heartGrid"></div>
   </div>
 
-  <!-- OLD CONFESS TAB -->
-  <div id="confess" class="section">
-    <h2>Share Your Feelings 💌</h2>
-    <textarea id="confessText" rows="4"></textarea>
-    <button class="btn" onclick="postConfession()">Share Anonymously</button>
-    <div id="confessGrid"></div>
-  </div>
-
-  <!-- OLD CHAT TAB -->
   <div id="chat" class="section">
-    <h2>Heartwords Chat Room 💬</h2>
+    <h2><span class="online-dot"></span>Heartwords Live Chat</h2>
+    <p style="text-align:center;color:#666;">Talk to others who understand 💖</p>
     <div class="chat-box">
-      <div class="chat-messages" id="chatMessages"></div>
-      <input type="text" id="chatName" placeholder="Your nickname">
-      <input type="text" id="chatInput" placeholder="Type...">
-      <button class="btn" onclick="sendChat()">Send</button>
+      <div class="chat-messages" id="chatMessages">Connecting...</div>
+      <div class="chat-input">
+        <input type="text" id="chatName" placeholder="Your nickname" maxlength="15">
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendChat()">
+        <button class="btn" onclick="sendChat()">Send</button>
+      </div>
     </div>
   </div>
 </div>
 
-<script>
-// OLD POEM DATA + NEW POEMS
-let poems = [
-  {id: 1, category: "love", title: "Heaven Sent", author: "Anonymous", text: "You walked in like sunshine\nand made my grey days\nfeel like home."},
-  {id: 2, category: "grief", title: "Empty Chair", author: "Ari", text: "The chair is still warm\nbut you are not here."},
-  // NEW POEMS FROM SCREENSHOTS
-  {id: 99, category: "anger", title: "What Remains", author: "New", text: "I'm angry\nbecause I cared\nand somehow\nthat wasn't enough."}
-];
+<!-- FIREBASE SDK - YOUR KEYS ARE ALREADY INSIDE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-let heartwords = JSON.parse(localStorage.getItem('heartwordsData')) || [];
-let confessions = JSON.parse(localStorage.getItem('confessionsData')) || [];
-let chatMessages = JSON.parse(localStorage.getItem('heartwordsChat')) || [];
+  // YOUR FIREBASE CONFIG - ALREADY PASTED
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjFRvZuwJT_iYW7sWYGbFPCCsjBVE4Fps",
+    authDomain: "heartwords-6b186.firebaseapp.com",
+    databaseURL: "https://heartwords-6b186-default-rtdb.firebaseio.com",
+    projectId: "heartwords-6b186",
+    storageBucket: "heartwords-6b186.firebasestorage.app",
+    messagingSenderId: "137574526790",
+    appId: "1:137574526790:web:71dae3de38f4ec29507f47",
+    measurementId: "G-M8JPXTKLVP"
+  };
 
-// OLD FUNCTIONS
-function filterByCategory(cat = document.getElementById('categorySelect').value) {
-  const filtered = cat === 'all'? poems : poems.filter(p => p.category === cat);
-  document.getElementById('poemsGrid').innerHTML = filtered.map(p => `
-    <div class="poem-card">
-      <div class="heart-btn ${heartwords.some(h=>h.poemId===p.id)?'active':''}" onclick="toggleHeart(${p.id})">❤️</div>
-      <h3 class="poem-title">${p.title}</h3>
-      <div class="poem-author">by ${p.author}</div>
-      <div class="poem-text">${p.text.split('\n').map((l,i)=>`<div class="poem-line" style="animation-delay:${i*0.2}s">${l}</div>`).join('')}</div>
-      <button class="btn picture" onclick="makePicture(${p.id})">🎨 Picture</button>
-    </div>
-  `).join('');
-}
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const chatRef = ref(db, 'heartwords-chat');
 
-function toggleHeart(id){ /* old code */ localStorage.setItem('heartwordsData', JSON.stringify(heartwords)); filterByCategory(); }
-function addPoem(){ /* old code */ }
-function postConfession(){ /* old code */ }
-function sendChat(){ /* old code */ }
-function makePicture(id){ alert("Picture made") }
+  const chatMessages = document.getElementById('chatMessages');
+  onChildAdded(chatRef, (data) => {
+    const msg = data.val();
+    const myName = document.getElementById('chatName').value;
+    const div = document.createElement('div');
+    div.className = `chat-msg ${msg.name === myName ? 'you' : ''}`;
+    div.innerHTML = `<b>${msg.name}</b>: ${msg.text} <br><small style="opacity:0.7">${msg.time}</small>`;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    if(chatMessages.innerText === "Connecting...") chatMessages.innerHTML = "";
+  });
 
-// NEW FUNCTIONS
-function surpriseMe(){ const p = poems[Math.floor(Math.random()*poems.length)]; alert(p.title) }
-function iDontKnow(){ alert("That's okay. You don't need to name it yet.") }
-function addFeeling(f){ document.getElementById('story').value = `I feel ${f}` }
-function setLetter(t){ document.getElementById('letterText').value = "Dear Me,\n\n" + t }
+  window.sendChat = function() {
+    const name = document.getElementById('chatName').value || "Anonymous";
+    const text = document.getElementById('chatInput').value;
+    if(!text) return;
+    push(chatRef, {
+      name: name,
+      text: text,
+      time: new Date().toLocaleTimeString()
+    });
+    document.getElementById('chatInput').value = "";
+  }
 
-function showTab(id,el){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active'); el.classList.add('active');
-}
-
-filterByCategory();
+  let poems = [
+    {id: 1, title: "Heaven Sent", text: "You walked in like sunshine\nand made my grey days\nfeel like home."},
+    {id: 2, title: "Empty Chair", text: "The chair is still warm\nbut you are not here."}
+  ];
+  function renderPoems() {
+    document.getElementById('poemsGrid').innerHTML = poems.map(p => `
+      <div class="poem-card">
+        <h3 class="poem-title">${p.title}</h3>
+        <div class="poem-text">${p.text}</div>
+      </div>
+    `).join('');
+  }
+  function showTab(id,el){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById(id).classList.add('active'); el.classList.add('active');
+  }
+  function addPoem(){ alert("Added locally") }
+  
+  renderPoems();
 </script>
 </body>
-      </html>
+</html>
