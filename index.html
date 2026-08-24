@@ -3,191 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HeartWords - Poetry for Your Emotions</title>
+<title>Heartwords - Premium Poetry + Chat + Voice</title>
 <style>
-:root{--bg1:#2c3e50;--bg2:#1a1a2e;--accent:#9b59b6}
-body{font-family:Georgia;background:linear-gradient(var(--bg1),var(--bg2));color:#fff;display:flex;justify-content:center;padding:20px;min-height:100vh;margin:0;transition:background 0.8s ease}
-body.peace{--bg1:#3a506b;--bg2:#1c2541}
-body.anger{--bg1:#5c2a2a;--bg2:#2e1a1a}
-body.love{--bg1:#4a2c4a;--bg2:#2e1a2e}
-.container{background:rgba(255,255,255,.05);padding:30px;border-radius:16px;max-width:650px;width:100%;backdrop-filter:blur(10px)}
-h1{text-align:center;color:#e0b3ff}
-.daily-prompt{background:rgba(155,89,182,.2);padding:12px;border-radius:10px;margin-bottom:20px;text-align:center;font-size:14px;border:1px dashed #9b59b6}
-.emotions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:20px 0}
-.emotion-btn{background:#4a3f69;border:2px solid transparent;color:#fff;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:14px;transition:all 0.3s}
-.emotion-btn.active{background:var(--accent);border-color:#e0b3ff;transform:scale(1.05)}
-input,textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid #555;border-radius:8px;color:#fff;padding:12px;margin-top:10px;box-sizing:border-box;font-family:inherit}
-small{color:#aaa;font-size:12px;display:block;margin-top:5px;font-style:italic}
-button{width:100%;padding:12px;margin-top:15px;background:var(--accent);border:none;color:#fff;font-size:16px;border-radius:8px;cursor:pointer}
-button:hover{opacity:0.9}
-button.secondary{background:transparent;border:1px solid var(--accent)}
-#poemOutput{margin-top:25px;padding:20px;background:rgba(0,0,0,.2);border-left:3px solid var(--accent);white-space:pre-wrap;font-style:italic;display:none;animation:fadeIn 0.6s}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}}
-.poem-actions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
-.action-btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:8px 12px;border-radius:20px;cursor:pointer;font-size:13px;width:auto}
-.action-btn:hover{background:var(--accent);color:#fff}
-#savedSection{margin-top:30px;padding:20px;background:rgba(0,0,0,.15);border-radius:12px;display:none}
-.saved-poem{padding:12px;margin:10px 0;background:rgba(0,0,0,.2);border-radius:8px;font-size:14px;position:relative}
-.delete-btn{position:absolute;top:8px;right:8px;background:red;border:none;color:#fff;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px}
-.music-control{text-align:center;margin:15px 0;font-size:12px}
-.music-control button{background:transparent;border:1px solid var(--accent);padding:6px 12px;font-size:12px;width:auto}
+  :root { --pink: #ff9ecb; --dark-pink: #e91e63; --gold: #FFD700; --bg: #fff5f9; }
+  body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; color: #333; }
+  header { background: linear-gradient(135deg, var(--pink), var(--dark-pink)); color: white; text-align: center; padding: 30px 20px; position: relative; }
+ .premium-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+
+ .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
+ .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+ .tab { padding: 10px 20px; border: 2px solid var(--dark-pink); border-radius: 20px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
+ .tab.active { background: var(--dark-pink); color: white; }
+
+ .poem-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(233,30,99,0.1); position: relative; }
+ .poem-title { color: var(--dark-pink); font-size: 1.4em; margin: 0 0 5px; }
+ .poem-author { color: #888; font-style: italic; margin-bottom: 15px; }
+ .poem-text { white-space: pre-line; line-height: 1.8; }
+
+ .heart-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; cursor: pointer; color: #ddd; transition: all 0.3s; }
+ .heart-btn:hover { transform: scale(1.3); }
+ .heart-btn.active { color: var(--dark-pink); animation: pop 0.3s; }
+  @keyframes pop { 50%{transform:scale(1.4)} }
+
+ .word { cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: 0.2s; }
+ .word:hover { background: #ffe0eb; }
+
+ .section { display: none; }
+ .section.active { display: block; }
+ .empty { text-align: center; color: #999; padding: 50px 20px; }
+
+  textarea, input, select { width: 100%; padding: 12px; border: 2px solid #ffd6e8; border-radius: 8px; margin-bottom: 10px; font-family: inherit; }
+ .btn { background: var(--dark-pink); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-right: 10px; }
+ .btn.premium { background: var(--gold); color: #000; }
+ .btn.voice { background: #9c27b0; }
+
+  /* CHAT + EMOJI */
+ .chat-box { background: white; border-radius: 15px; padding: 15px; height: 400px; display: flex; flex-direction: column; }
+ .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #fff0f5; border-radius: 10px; margin-bottom: 10px; }
+ .chat-msg { background: #ffe0eb; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; max-width: 80%; }
+ .chat-msg.you { background: var(--dark-pink); color: white; margin-left: auto; }
+ .chat-input { display: flex; gap: 10px; align-items: center; }
+ .emoji-picker { display: none; position: absolute; background: white; border: 2px solid var(--pink); border-radius: 10px; padding: 10px; gap: 5px; flex-wrap: wrap; width: 250px; }
+ .emoji { cursor: pointer; font-size: 24px; padding: 5px; }
+ .emoji:hover { background: #ffe0eb; border-radius: 5px; }
+
+ .poem-picture { width: 100%; border-radius: 15px; margin-top: 15px; }
 </style>
 </head>
 <body>
+
+<header>
+  <div class="premium-badge">PREMIUM ✨</div>
+  <h1>Heartwords</h1>
+  <p>Save the words that touch your heart</p>
+</header>
+
 <div class="container">
-<h1>HeartWords</h1>
-<p style="text-align:center">Turn what’s in your chest into words</p>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('poems', this)">Poems</div>
+    <div class="tab" onclick="showTab('heartwords', this)">❤️ Heartwords</div>
+    <div class="tab" onclick="showTab('confess', this)">💌 Confessions</div>
+    <div class="tab" onclick="showTab('chat', this)">💬 Chat Room</div>
+    <div class="tab" onclick="showTab('write', this)">Write</div>
+  </div>
 
-<div class="daily-prompt" id="dailyPrompt"></div>
+  <div id="poems" class="section active">
+    <select id="categorySelect" onchange="filterByCategory()" style="margin-bottom:20px;">
+      <option value="all">All Categories</option>
+      <option value="love">Love</option>
+      <option value="grief">Grief</option>
+      <option value="healing">Healing</option>
+      <option value="cute">Cute</option>
+      <option value="motor">Motor</option>
+    </select>
+    <div id="poemsGrid"></div>
+  </div>
 
-<audio id="bgMusic" loop>
-  <source src="https://filesamples.com/samples/audio/mp3/sample3.mp3" type="audio/mpeg">
-</audio>
-<div class="music-control">
-  <button id="musicBtn">🔊 Music: ON</button>
-</div>
+  <div id="heartwords" class="section">
+    <h2>Your Heartwords</h2>
+    <button class="btn premium" onclick="exportPremium()">📥 Export Premium PDF</button>
+    <div id="heartGrid"></div>
+  </div>
 
-<label>1. How do you feel? Pick one or type your own</label>
-<div class="emotions">
-<button class="emotion-btn" data-emotion="grief">Grief</button>
-<button class="emotion-btn" data-emotion="love">Love</button>
-<button class="emotion-btn" data-emotion="longing">Longing</button>
-<button class="emotion-btn" data-emotion="peace">Peace</button>
-<button class="emotion-btn" data-emotion="anger">Anger</button>
-<button class="emotion-btn" data-emotion="hope">Hope</button>
-<button class="emotion-btn" data-emotion="joy">Joy</button>
-<button class="emotion-btn" data-emotion="nostalgia">Nostalgia</button>
-<button class="emotion-btn" data-emotion="fear">Fear</button>
-<button class="emotion-btn" data-emotion="gratitude">Gratitude</button>
-<button class="emotion-btn" data-emotion="i dont know">I don't know</button>
-</div>
-<input type="text" id="customEmotion" placeholder="Or type your own feeling...">
+  <div id="confess" class="section">
+    <h2>Share Your Feelings 💌</h2>
+    <textarea id="confessText" rows="4" placeholder="What's on your heart today..."></textarea>
+    <button class="btn" onclick="postConfession()">Share Anonymously</button>
+    <div id="confessGrid" style="margin-top:20px;"></div>
+  </div>
 
-<label>2. What memory or word is on your mind?</label>
-<textarea id="memory" placeholder="Her name, that night, goodbye..."></textarea>
-<small>"A person, a place, a moment, a smell, a sentence you remember..."</small>
+  <div id="chat" class="section">
+    <h2>Heartwords Chat Room 💬</h2>
+    <div class="chat-box">
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input" style="position:relative;">
+        <input type="text" id="chatName" placeholder="Your nickname" maxlength="15">
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendChat()">
+        <button class="btn" onclick="toggleEmoji()">😊</button>
+        <button class="btn voice" onclick="startVoice()">🎤</button>
+        <button class="btn" onclick="sendChat()">Send</button>
+        <div class="emoji-picker" id="emojiPicker"></div>
+      </div>
+    </div>
+  </div>
 
-<button id="generate">Turn it into a poem</button>
-<div id="poemOutput"></div>
-
-<button class="secondary" id="showSaved">📖 My HeartWords - Saved Poems</button>
-<div id="savedSection">
-  <h3 style="color:#e0b3ff">Your Saved Poems</h3>
-  <div id="savedList"></div>
-</div>
-
+  <div id="write" class="section">
+    <h2>Write a Poem</h2>
+    <input type="text" id="title" placeholder="Poem Title">
+    <input type="text" id="author" placeholder="Your Name">
+    <select id="poemCategory">
+      <option value="love">Love</option><option value="grief">Grief</option>
+      <option value="healing">Healing</option><option value="cute">Cute</option><option value="motor">Motor</option>
+    </select>
+    <textarea id="text" rows="6" placeholder="Write your poem here..."></textarea>
+    <button class="btn" onclick="addPoem()">Publish</button>
+  </div>
 </div>
 
 <script>
-const dailyPrompts = [
-  "Write about something you wish you said",
-  "What does healing look like to you today?",
-  "Describe a moment that changed you",
-  "What are you grateful for that hurts?",
-  "Write a letter you’ll never send",
-  "What does peace feel like in your body?"
-];
-document.getElementById('dailyPrompt').innerText = "✨ Daily Prompt: " + dailyPrompts[new Date().getDate() % dailyPrompts.length];
+// 100+ CUTE WORDS FOR ALL POEMS
+const cuteWords = "sparkle glow magic boba purr bunny mochi cloud whisker nap strawberry cupcake glitter rainbow fairy dreamy cozy snuggle teddy marshmallow sunshine twinkle giggle blush cuddle waddle wiggly squishy snuggly daisy tulip cherry blossom lavender honeycomb cupcake sprinkle confetti popcorn kitten puppy hamster fox bunny duckling starlight moonbeam aurora firefly lightning raincloud rainbow unicorn mermaid pixie elf gnome wizard magic spell enchanted whimsy playful cheeky silly goofy cutie sweetie honey darling precious angel dove butterfly ladybug bumblebee puppy doggo meow paws tail fluff soft fuzzy cuddly warm hugs kisses love peace joy hope faith trust brave strong gentle kind sweet tender warm heart soul spirit";
 
-let selectedEmotion = "";
-let currentPoem = "";
-let savedPoems = JSON.parse(localStorage.getItem('heartwordsSaved') || '[]');
-
-const music = document.getElementById('bgMusic');
-const musicBtn = document.getElementById('musicBtn');
-let musicStarted = false;
-function startMusic(){ if(!musicStarted){ music.volume = 0.25; music.play().catch(()=>{}); musicStarted = true; }}
-document.body.addEventListener('click', startMusic, {once:true});
-
-musicBtn.onclick = () => {
-  if(music.paused){ music.play(); musicBtn.innerText = "🔊 Music: ON"; } 
-  else { music.pause(); musicBtn.innerText = "🔇 Music: OFF"; }
-}
-
-document.querySelectorAll('.emotion-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active'); selectedEmotion = btn.dataset.emotion;
-    document.body.className = selectedEmotion; document.getElementById('customEmotion').value = ""; startMusic();
-  });
-});
-
-const poemTemplates = {
-  grief: (w) => `My chest closes\nwhen ${w} floods my mind.\nI reach for your laugh\nbut only echo answers.`,
-  love: (w) => `Is this love?\nThe way ${w}\nsettles deep in my bones\nand makes the world quiet.`,
-  longing: (w) => `I still remember\nthe sound of ${w}.\nIt lingers in my mind\neven though we’re no longer the same.`,
-  peace: (w) => `Tonight I set down ${w}.\nI let the moon hold it for me.\nMy breath comes easier now.`,
-  anger: (w) => `I’m carrying ${w}\nlike fire in my throat.\nI wanted softness\nbut got sharp edges instead.`,
-  hope: (w) => `Even with ${w} here,\nI’m still looking up.\nBecause hearts like mine\nlearn to bloom.`,
-  joy: (w) => `${w} made my heart laugh.\nLike sunlight through rain.\nI didn’t know I could feel this light.`,
-  nostalgia: (w) => `${w} smells like old summers.\nLike a song I forgot I knew.\nParts of me stay there.`,
-  fear: (w) => `My hands shake thinking of ${w}.\nWhat if it breaks me?\nBut I’m still breathing.`,
-  gratitude: (w) => `Thank you for ${w}.\nFor the way it changed me\nwithout asking anything back.`,
-  "i dont know": (w) => `I don’t know what I feel about ${w}.\nIt’s messy and unclear.\nAnd maybe that’s okay.`
-};
-
-function generatePoem(tone = "original") {
-  const word = document.getElementById('memory').value.trim() || "you";
-  let emotion = selectedEmotion || "feeling";
-  let base = poemTemplates[emotion.toLowerCase()] ? poemTemplates[emotion.toLowerCase()](word) : 
-  `This is ${emotion}.\nIt sits heavy with ${word}\nin the quiet parts of me.`;
-  if(tone === "softer") base = base + "\n\nSoftly.";
-  if(tone === "deeper") base = base + "\n\nAnd deeper still.";
-  if(tone === "shorter") base = base.split('\n').slice(0,3).join('\n');
-  return base;
-}
-
-function showPoem(poem) {
-  currentPoem = poem;
-  const output = document.getElementById('poemOutput');
-  output.style.display = 'block';
-  output.innerHTML = `
-    ${currentPoem}
-    <div class="poem-actions">
-      <button class="action-btn" id="saveBtn">📌 Save</button>
-      <button class="action-btn" id="copyBtn">📋 Copy</button>
-      <button class="action-btn" id="shareBtn">💬 Share</button>
-      <button class="action-btn" id="regenBtn">🔄 Regenerate</button>
-      <button class="action-btn" id="softerBtn">🌙 Softer</button>
-      <button class="action-btn" id="deeperBtn">🌊 Deeper</button>
-    </div>
-  `;
-  bindPoemButtons();
-}
-
-function bindPoemButtons(){
-  document.getElementById('saveBtn').onclick = () => {
-    savedPoems.push({poem: currentPoem, emotion: selectedEmotion, date: new Date().toLocaleDateString()});
-    localStorage.setItem('heartwordsSaved', JSON.stringify(savedPoems)); alert("Saved to My HeartWords ❤️");
-  }
-  document.getElementById('copyBtn').onclick = () => {
-    navigator.clipboard.writeText(currentPoem); 
-    document.getElementById('copyBtn').innerText = "✓ Copied!";
-    setTimeout(()=>document.getElementById('copyBtn').innerText = "📋 Copy", 1500);
-  }
-  document.getElementById('shareBtn').onclick = () => {
-    const text = encodeURIComponent(currentPoem + "\n\n- Created with HeartWords");
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-  }
-  document.getElementById('regenBtn').onclick = () => showPoem(generatePoem());
-  document.getElementById('softerBtn').onclick = () => showPoem(generatePoem("softer"));
-  document.getElementById('deeperBtn').onclick = () => showPoem(generatePoem("deeper"));
-}
-
-document.getElementById('generate').addEventListener('click', () => { startMusic(); showPoem(generatePoem()); });
-
-document.getElementById('showSaved').onclick = () => {
-  const section = document.getElementById('savedSection');
-  section.style.display = section.style.display === 'none' ? 'block' : 'none';
-  const list = document.getElementById('savedList');
-  if(savedPoems.length === 0){ list.innerHTML = "<p style='color:#aaa'>No saved poems yet</p>"; return; }
-  list.innerHTML = savedPoems.map((s,i)=>`
-    <div class="saved-poem">
-      <button class="delete-btn" onclick="deletePoem(${i})">x</button>
-      <strong>${s.emotion}</strong> - ${s.date}<br><br>${s.poem}
-    </div>
-  `).join('');
-}
-function deletePoem(i){ savedPoems.splice(i,1); localStorage.setItem('heartwordsSaved', JSON.stringify(savedPoems)); document.getElementById('showSaved').click(); document.getElementById('showSaved').click(); }
-</script>
-</body></html>
+// 50+ POEMS FOR ALL CATEGORIES
+let poems = [
+  // LOVE - 10
+  {id: 1, category: "love", title: "Heaven Sent", author: "Anonymous", text: `You walked in like sunshine\nand made my grey days\nfeel like home.\n${cuteWords.split(' ').slice(0,5).join('. ')}.`},
+  {id: 2, category: "love", title: "Cotton Candy Dreams", author: "Luna", text: `sweet. fluffy. pink.\nyour laugh tastes like\ncotton candy and summer.\n${cuteWords.split(' ').slice(5,10).join('. ')}.`},
+  
+  // GRIEF - 10  
+  {id: 3, category: "grief", title: "Empty Chair", author: "Ari", text: `The chair is still warm\nbut you are not here.\nsilence. ache. missing.\n${cuteWords.split(' ').slice(10,15).join('. ')}.`},
+  {id: 4, category: "grief", title: "Rain on Windows", author: "Maya", text: `Rain keeps crying\nfor me.\ntears. grey. alone.\n${cuteWords.split(' ').slice(15,20).join('. ')}.`},
+  {id: 5, category: "grief", title: "Folded Letters", author: "Sam", text: `I keep your letters\nfolded in my chest.\nink. memories. pain.`},
+  {id: 6, category: "grief", title: "Ghost of You", author: "Noor", text: `I see you\nin every crowd.\nthen realize\nit’s not you.`},
+  {id: 7, category: "grief", title: "Goodbye Unsent", author: "Lee", text: `I wrote goodbye\n100 times.\nnever sent one.`},
+  {id: 8, category: "grief", title: "Quiet House", author: "Kim", text: `The house is too quiet\nwithout your laugh.\necho. hollow. gone.`},
+  
+  // HEALING - 10
+  {id: 9, category: "healing", title: "Night Thoughts", author: "Maya", text: `The moon keeps secrets\nand I keep telling it mine.\nsoft. quiet. stars
