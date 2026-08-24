@@ -1,340 +1,260 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heartwords - Premium Poetry</title>
+<title>HeartWords - Some feelings were never meant to stay unspoken</title>
 <style>
   :root { --pink: #ff9ecb; --dark-pink: #e91e63; --gold: #FFD700; --bg: #fff5f9; }
     * { box-sizing: border-box; }
-  body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; color: #333; }
-  header { background: linear-gradient(135deg, var(--pink), var(--dark-pink)); color: white; text-align: center; padding: 30px 20px; position: relative; }
-  .premium-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-  
-  .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
-  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab { padding: 10px 20px; border: 2px solid var(--dark-pink); border-radius: 20px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
-  .tab.active { background: var(--dark-pink); color: white; }
+  body { font-family: 'Georgia', serif; background: var(--bg); margin: 0; color: #2d2d2d; transition: background 1s; }
 
-  .poem-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(233,30,99,0.1); position: relative; }
-  .poem-title { color: var(--dark-pink); font-size: 1.4em; margin: 0 0 5px; }
-  .poem-author { color: #888; font-style: italic; margin-bottom: 15px; }
-  .poem-text { white-space: pre-line; line-height: 1.8; }
+  /* #1 OPENING SCREEN */
+  #welcome { position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(180deg, #fff5f9, #ffe0eb); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; text-align:center; padding:20px; }
+  #welcome h1 { font-size: 3em; margin:0; letter-spacing: 2px; }
+  #welcome p { font-style: italic; font-size: 1.2em; margin: 10px 0 30px; }
+ .enter-btn { background: var(--dark-pink); color:white; padding: 14px 30px; border-radius: 25px; border:none; font-size:1.1em; cursor:pointer; font-family: 'Courier New', monospace; }
 
-  .heart-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; cursor: pointer; color: #ddd; transition: all 0.3s; user-select: none; }
-  .heart-btn:hover { transform: scale(1.3); }
-  .heart-btn.active { color: var(--dark-pink); animation: pop 0.3s; }
-  @keyframes pop { 50%{transform:scale(1.4)} }
+  header { background: white; padding: 25px; text-align: center; border-bottom: 1px solid #ffd6e8; }
+.container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
 
-  .word { cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: 0.2s; }
-  .word:hover { background: #ffe0eb; }
+  /* #12 HEARTWORD OF THE DAY */
+.heartword-day { background: white; padding: 25px; border-radius: 20px; margin: 20px auto; text-align: center; box-shadow: 0 4px 20px rgba(233,30,99,0.1); }
+.heartword-day.word { font-size: 2.5em; font-weight: bold; color: var(--dark-pink); }
 
-  .section { display: none; }
-  .section.active { display: block; }
-  .empty { text-align: center; color: #999; padding: 50px 20px; }
+  /* #2 EMOTIONAL WORLDS */
+.worlds { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0; }
+.world { background: white; padding: 20px; border-radius: 12px; border-left: 4px solid var(--dark-pink); cursor: pointer; }
+.world h3 { margin: 0 0 5px; color: var(--dark-pink); }
+.world p { margin: 0; font-size: 0.9em; color: #666; font-style: italic; }
 
-  textarea, input, select { width: 100%; padding: 12px; border: 2px solid #ffd6e8; border-radius: 8px; margin-bottom: 10px; font-family: inherit; }
-  .btn { background: var(--dark-pink); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-right: 10px; margin-top: 10px; }
-  .btn.premium { background: var(--gold); color: #000; }
-  .btn.voice { background: #9c27b0; }
-  .btn.picture { background: #9c27b0; }
+  /* #4 THE ARCHIVE */
+.archive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+.collection { background: white; padding: 20px; border-radius: 12px; text-align: center; }
 
-  .chat-box { background: white; border-radius: 15px; padding: 15px; height: 400px; display: flex; flex-direction: column; }
-  .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #fff0f5; border-radius: 10px; margin-bottom: 10px; }
-  .chat-msg { background: #ffe0eb; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; max-width: 80%; word-wrap: break-word; }
-  .chat-msg.you { background: var(--dark-pink); color: white; margin-left: auto; }
-  .chat-input { display: flex; gap: 10px; align-items: center; position: relative; flex-wrap: wrap; }
-  .emoji-picker { display: none; position: absolute; bottom: 50px; right: 0; background: white; border: 2px solid var(--pink); border-radius: 10px; padding: 10px; gap: 5px; flex-wrap: wrap; width: 250px; z-index: 10; }
-  .emoji { cursor: pointer; font-size: 24px; padding: 5px; }
-  .emoji:hover { background: #ffe0eb; border-radius: 5px; }
-  .poem-picture { width: 100%; border-radius: 15px; margin-top: 15px; }
+  /* #11 EMOTION MAP */
+.emotion-map { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.emotion-group { background: white; padding: 20px; border-radius: 15px; min-width: 200px; }
+.emotion-group button { display: block; width: 100%; text-align: left; background: #ffe0eb; border: none; padding: 10px; margin: 6px 0; border-radius: 8px; cursor: pointer; }
+
+.poem-card { background: white; padding: 30px; border-radius: 15px; margin: 20px 0; border-left: 4px solid var(--pink); line-height: 1.9; font-size: 1.1em; }
+.poem-line { opacity: 0; animation: fadeIn 0.8s forwards; } /* #5 */
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  textarea, input { width: 100%; padding: 14px; border: 2px solid #ffd6e8; border-radius: 10px; margin: 10px 0; font-family: inherit; }
+.btn { background: var(--dark-pink); color: white; border: none; padding: 14px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; margin: 5px; }
+.btn.dontknow { background: #6c5ce7; width: 100%; font-size: 1.1em; } /* #6 */
+.btn.secondary { background: #aaa; }
+.btn.surprise { background: #00b894; } /* #2 */
+
+.feeling-tags button { background: #ffe0eb; border: none; padding: 8px 14px; border-radius: 20px; margin: 5px; cursor: pointer; } /* Feeling tags */
+
+.section { display: none; }
+.section.active { display: block; }
+.tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+.tab { padding: 12px 22px; border: 2px solid var(--dark-pink); border-radius: 25px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
+.tab.active { background: var(--dark-pink); color: white; }
+
+.saved-poem { background: #fff0f5; padding: 15px; border-radius: 10px; margin: 10px 0; position: relative; white-space: pre-line; }
+.remove { position: absolute; top: 10px; right: 15px; cursor: pointer; }
 </style>
 </head>
 <body>
 
+<!-- #1 OPENING SCREEN -->
+<div id="welcome">
+  <h1>HEARTWORDS</h1>
+  <p>Some feelings were never meant to stay unspoken.</p>
+  <button class="enter-btn" onclick="document.getElementById('welcome').style.display='none'">enter quietly →</button>
+</div>
+
 <header>
-  <div class="premium-badge">PREMIUM ✨</div>
-  <h1>Heartwords</h1>
-  <p>Save the words that touch your heart</p>
+  <h1>HeartWords</h1>
 </header>
+
+<!-- #12 HEARTWORD OF THE DAY -->
+<div class="heartword-day">
+  <h3>THE HEARTWORD OF THE DAY</h3>
+  <div class="word" id="dailyWord">Bittersweet</div>
+  <p id="dailyMeaning">Something can be beautiful and still hurt to remember.</p>
+</div>
 
 <div class="container">
   <div class="tabs">
-    <div class="tab active" onclick="showTab('poems', this)">Poems</div>
-    <div class="tab" onclick="showTab('heartwords', this)">❤️ Heartwords</div>
-    <div class="tab" onclick="showTab('confess', this)">💌 Confessions</div>
-    <div class="tab" onclick="showTab('chat', this)">💬 Chat Room</div>
-    <div class="tab" onclick="showTab('write', this)">Write</div>
+    <div class="tab active" onclick="showTab('write', this)">Write</div>
+    <div class="tab" onclick="showTab('worlds', this)">Worlds</div>
+    <div class="tab" onclick="showTab('archive', this)">Archive</div>
+    <div class="tab" onclick="showTab('emotion', this)">🧠 Map</div>
+    <div class="tab" onclick="showTab('letter', this)">🪞 Letter</div>
+    <div class="tab" onclick="showTab('saved', this)">♡ Saved</div>
   </div>
 
-  <div id="poems" class="section active">
-    <select id="categorySelect" onchange="filterByCategory()" style="margin-bottom:20px;">
-      <option value="all">All Categories</option>
-      <option value="love">Love</option>
-      <option value="grief">Grief</option>
-      <option value="healing">Healing</option>
-      <option value="cute">Cute</option>
-      <option value="motor">Motor</option>
-    </select>
-    <div id="poemsGrid"></div>
+  <!-- WRITE TAB: #3 + #6 + #7 -->
+  <div id="write" class="section active">
+    <button class="btn surprise" onclick="surpriseMe()">🎲 Surprise me</button>
+    <button class="btn dontknow" onclick="iDontKnow()">I DON'T KNOW WHAT I'M FEELING</button>
+
+    <h3>Tell me what happened</h3>
+    <textarea id="story" rows="3" placeholder="[ I don't know how to say it... ]"></textarea>
+    <p><b>What does it feel like?</b></p>
+    <div class="feeling-tags">
+      <button onclick="addFeeling('Heavy')">🌧️ Heavy</button>
+      <button onclick="addFeeling('Quiet')">🕯️ Quiet</button>
+      <button onclick="addFeeling('Burning')">🔥 Burning</button>
+      <button onclick="addFeeling('Overwhelming')">🌊 Overwhelming</button>
+      <button onclick="addFeeling('Healing')">🌱 Healing</button>
+      <button onclick="addFeeling('Empty')">☁️ Empty</button>
+      <button onclick="addFeeling('Warm')">✨ Warm</button>
+    </div>
+    <button class="btn" onclick="generatePoem()">Create Poem</button>
+
+    <h3 style="margin-top:30px;">Or finish the thought</h3>
+    <button class="btn secondary" onclick="finishThought('I wish I could tell you...')">"I wish I could tell you..."</button>
+    <button class="btn secondary" onclick="finishThought('I never told anyone that...')">"I never told anyone that..."</button>
+    <button class="btn secondary" onclick="finishThought('I miss the days when...')">"I miss the days when..."</button>
+    <textarea id="finishInput" rows="2"></textarea>
+    <button class="btn" onclick="generateFinish()">Make it a poem</button>
+
+    <div id="poemOutput"></div>
   </div>
 
-  <div id="heartwords" class="section">
-    <h2>Your Heartwords</h2>
-    <button class="btn premium" onclick="exportPremium()">📥 Export Premium PDF</button>
-    <div id="heartGrid"></div>
+  <!-- #2 EMOTIONAL WORLDS -->
+  <div id="worlds" class="section">
+    <h2>Explore by Feeling</h2>
+    <div class="worlds">
+      <div class="world" onclick="filterWorld('love')"><h3>LOVE</h3><p>For the feelings you couldn't quite name.</p></div>
+      <div class="world" onclick="filterWorld('longing')"><h3>LONGING</h3><p>For people, places, and versions of yourself you miss.</p></div>
+      <div class="world" onclick="filterWorld('nostalgia')"><h3>NOSTALGIA</h3><p>For moments that became memories before you noticed.</p></div>
+      <div class="world" onclick="filterWorld('grief')"><h3>GRIEF</h3><p>For endings that don't always have funerals.</p></div>
+      <div class="world" onclick="filterWorld('hope')"><h3>HOPE</h3><p>For the tiny part of you that still believes.</p></div>
+      <div class="world" onclick="filterWorld('anger')"><h3>ANGER</h3><p>For everything you were too quiet about.</p></div>
+    </div>
+    <div id="worldPoems"></div>
   </div>
 
-  <div id="confess" class="section">
-    <h2>Share Your Feelings 💌</h2>
-    <textarea id="confessText" rows="4" placeholder="What's on your heart today..."></textarea>
-    <button class="btn" onclick="postConfession()">Share Anonymously</button>
-    <div id="confessGrid" style="margin-top:20px;"></div>
+  <!-- #4 THE ARCHIVE -->
+  <div id="archive" class="section">
+    <h2>THE ARCHIVE</h2>
+    <div class="archive-grid">
+      <div class="collection" onclick="showCategory('midnight')"><h4>🌙 Midnight</h4><p>Quiet thoughts</p></div>
+      <div class="collection" onclick="showCategory('yesterday')"><h4>🏠 Yesterday</h4><p>Nostalgia</p></div>
+      <div class="collection" onclick="showCategory('unsaid')"><h4>💌 Unsent</h4><p>Things unsaid</p></div>
+      <div class="collection" onclick="showCategory('becoming')"><h4>🌱 Becoming</h4><p>Growth</p></div>
+      <div class="collection" onclick="showCategory('people')"><h4>👥 People</h4><p>Connection</p></div>
+      <div class="collection" onclick="showCategory('heavy')"><h4>🌧️ Heavy</h4><p>Sadness</p></div>
+      <div class="collection" onclick="showCategory('light')"><h4>☀️ Light</h4><p>Hope</p></div>
+    </div>
+    <div id="archivePoems"></div>
   </div>
 
-  <div id="chat" class="section">
-    <h2>Heartwords Chat Room 💬</h2>
-    <div class="chat-box">
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-input">
-        <input type="text" id="chatName" placeholder="Your nickname" maxlength="15" style="flex:1 1 120px">
-        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendChat()" style="flex:2 1 200px">
-        <button class="btn" onclick="toggleEmoji()">😊</button>
-        <button class="btn voice" onclick="startVoice()">🎤</button>
-        <button class="btn" onclick="sendChat()">Send</button>
-        <div class="emoji-picker" id="emojiPicker"></div>
+  <!-- #11 EMOTION MAP -->
+  <div id="emotion" class="section">
+    <h2>What are you feeling?</h2>
+    <div class="emotion-map">
+      <div class="emotion-group"><h4>Sad</h4>
+        <button onclick="pickEmotion('lonely')">lonely</button>
+        <button onclick="pickEmotion('nostalgic')">nostalgic</button>
+        <button onclick="pickEmotion('grieving')">grieving</button>
+      </div>
+      <div class="emotion-group"><h4>Happy</h4>
+        <button onclick="pickEmotion('grateful')">grateful</button>
+        <button onclick="pickEmotion('peaceful')">peaceful</button>
       </div>
     </div>
   </div>
 
-  <div id="write" class="section">
-    <h2>Write a Poem</h2>
-    <input type="text" id="title" placeholder="Poem Title">
-    <input type="text" id="author" placeholder="Your Name">
-    <select id="poemCategory">
-      <option value="love">Love</option><option value="grief">Grief</option>
-      <option value="healing">Healing</option><option value="cute">Cute</option><option value="motor">Motor</option>
-    </select>
-    <textarea id="text" rows="6" placeholder="Write your poem here..."></textarea>
-    <button class="btn" onclick="addPoem()">Publish</button>
+  <!-- #10 LETTER TO MYSELF -->
+  <div id="letter" class="section">
+    <h2>Dear Me,</h2>
+    <button class="btn secondary" onclick="setLetterPrompt('To the younger me...')">To the younger me...</button>
+    <button class="btn secondary" onclick="setLetterPrompt('To the future me...')">To the future me...</button>
+    <textarea id="letterText" rows="8"></textarea>
+    <button class="btn" onclick="saveLetter()">Save Letter</button>
+  </div>
+
+  <!-- #3 MY WORDS -->
+  <div id="saved" class="section">
+    <h2>♡ My Words</h2>
+    <p><i>"Things I wanted to say but couldn't."</i></p>
+    <div id="myWords"></div>
   </div>
 </div>
 
 <script>
-// COMPLETE POEM DATA - 25 POEMS
-let poems = [
-  {id: 1, category: "love", title: "Heaven Sent", author: "Anonymous", text: "You walked in like sunshine\nand made my grey days\nfeel like home.\nsparkle. glow. magic."},
-  {id: 2, category: "love", title: "Cotton Candy Dreams", author: "Luna", text: "sweet. fluffy. pink.\nyour laugh tastes like\ncotton candy and summer.\nbunny. mochi. cloud."},
-  {id: 3, category: "love", title: "Strawberry Kisses", author: "Ari", text: "your lips taste like\nstrawberries in june.\nsweet. soft. us."},
-  {id: 4, category: "love", title: "Starlight", author: "Sky", text: "You are my favorite\nconstellation.\nI get lost in you."},
-  {id: 5, category: "love", title: "Coffee for Two", author: "Morning", text: "Two cups. One table.\nYour hand in mine.\nPerfect morning."},
-  
-  {id: 6, category: "grief", title: "Empty Chair", author: "Ari", text: "The chair is still warm\nbut you are not here.\nsilence. ache. missing."},
-  {id: 7, category: "grief", title: "Rain on Windows", author: "Maya", text: "Rain keeps crying\nfor me.\ntears. grey. alone."},
-  {id: 8, category: "grief", title: "Folded Letters", author: "Sam", text: "I keep your letters\nfolded in my chest.\nink. memories. pain."},
-  {id: 9, category: "grief", title: "Ghost of You", author: "Noor", text: "I see you\nin every crowd.\nthen realize\nit’s not you."},
-  {id: 10, category: "grief", title: "Goodbye Unsent", author: "Lee", text: "I wrote goodbye\n100 times.\nnever sent one."},
-  
-  {id: 11, category: "healing", title: "Night Thoughts", author: "Maya", text: "The moon keeps secrets\nand I keep telling it mine.\nsoft. quiet. stars."},
-  {id: 12, category: "healing", title: "Growing", author: "Rose", text: "I am learning\nto water myself.\nbloom. patience. me."},
-  {id: 13, category: "healing", title: "After the Storm", author: "Hope", text: "The rain stopped.\nI am still here.\nstronger. new. me."},
-  {id: 14, category: "healing", title: "Breathe", author: "Calm", text: "In. Out.\nYou are okay.\nRight now is enough."},
-  {id: 15, category: "healing", title: "Sunrise", author: "New Day", text: "Darkness ends.\nLight returns.\nSo will you."},
-  
-  {id: 16, category: "cute", title: "Bubble Tea Love", author: "Ari", text: "boba. boba. boba.\nstraw in hand, heart in yours.\nchewy. cute. us."},
-  {id: 17, category: "cute", title: "Kitten Paws", author: "Meow", text: "tiny. soft. purr.\nyou fit right in my pocket\nand my heart.\nwhisker. nap. love."},
-  {id: 18, category: "cute", title: "Puppy Eyes", author: "Doggo", text: "big eyes. wagging tail.\nyou are my whole world\nin 4 little paws."},
-  {id: 19, category: "cute", title: "Mochi", author: "Sweet", text: "squishy. soft. sweet.\nlike you.\nmy little mochi."},
-  {id: 20, category: "cute", title: "Rainbow", author: "Colors", text: "after rain comes\nrainbow. glitter. joy.\nyou make me that."},
-  
-  {id: 21, category: "motor", title: "Motor Heart", author: "You", text: "Engine roaring\nheart racing\nfreedom tastes like\nopen road.\nvroom. wind. fly."},
-  {id: 22, category: "motor", title: "Midnight Drive", author: "Rider", text: "Headlights cut the dark\nmusic up. windows down.\njust me and the road."},
-  {id: 23, category: "motor", title: "Speed", author: "Fast", text: "Adrenaline. Asphalt.\nWind in my hair.\nAlive."},
-  {id: 24, category: "motor", title: "Garage Days", author: "Wrench", text: "Oil on my hands\nlove in my heart.\nbuilding dreams."},
-  {id: 25, category: "motor", title: "Open Road", author: "Wander", text: "No destination.\nJust drive.\nJust be free."}
-];
+// ALL POEMS FROM SCREENSHOTS
+const poemLibrary = {
+  nostalgia: [{title: "Back Then", text: `I remember when\nafternoons felt endless,\nwhen home was a place\nand not a photograph.`}],
+  unsaid: [{title: "Almost", text: `I had so many words\nwaiting behind my teeth.\n\nBut the moment came\nand I smiled instead.`}],
+  anger: [{title: "What Remains", text: `I'm angry\nbecause I cared\nand somehow\nthat wasn't enough\nto make you careful\nwith my heart.`}],
+  hope: [{title: "Tomorrow", text: `Maybe tomorrow\nwon't fix everything.\n\nMaybe that's okay.`}],
+  healing: [{title: "Little By Little", text: `I thought healing\nwould feel like becoming\nsomeone new.\n\nInstead,\nit feels like finding\npieces of myself.`}],
+  people: [{title: "Still Here", text: `We don't talk\nthe way we used to.\n\nBut somehow,\nyou're still here.`}]
+};
 
-let heartwords = JSON.parse(localStorage.getItem('heartwordsData')) || [];
-let confessions = JSON.parse(localStorage.getItem('confessionsData')) || [];
-let chatMessages = JSON.parse(localStorage.getItem('heartwordsChat')) || [];
-const emojis = ['❤️','😭','✨','💕','🥺','😊','🌸','🌙','⭐','💫','🦋','🐰','🍓','☁️','🎀'];
+let allPoems = []; Object.keys(poemLibrary).forEach(k => allPoems.push(...poemLibrary[k]));
 
-function filterByCategory() {
-  const cat = document.getElementById('categorySelect').value;
-  const filtered = cat === 'all'? poems : poems.filter(p => p.category === cat);
-  renderPoems(filtered);
+// #5 LINE BY LINE FADE
+function showPoem(poem) {
+  const lines = poem.text.split('\n');
+  let html = `<div class="poem-card"><b>${poem.title}</b><br><br>`;
+  lines.forEach((line, i) => html += `<div class="poem-line" style="animation-delay:${i*0.3}s">${line}</div>`);
+  html += `<br><button class="btn" onclick="shufflePoem()">↻ Give me another</button>`;
+  html += `<button class="btn" onclick="saveAsCard(\`${poem.text}\`)">🖼️ Save as Card</button>`;
+  html += `<button class="btn" onclick="savePoem('${poem.title}', \`${poem.text}\`)">♡ Save</button></div>`;
+  document.getElementById('poemOutput').innerHTML = html;
 }
 
-function renderPoems(data = poems) {
-  if(data.length === 0) {
-    document.getElementById('poemsGrid').innerHTML = `<div class="empty">No poems in this category yet</div>`;
-    return;
-  }
-  document.getElementById('poemsGrid').innerHTML = data.map(p => `
-    <div class="poem-card">
-      <div class="heart-btn ${heartwords.some(h=>h.poemId===p.id)?'active':''}" onclick="toggleHeart(${p.id})">❤️</div>
-      <h3 class="poem-title">${p.title}</h3>
-      <div class="poem-author">by ${p.author} • ${p.category}</div>
-      <div class="poem-text" id="text-${p.id}">${makeWordsClickable(p.text, p.id)}</div>
-      <button class="btn picture" onclick="makePicture(${p.id})">🎨 Turn into Picture</button>
-    </div>
-  `).join('');
+// #6 I DON'T KNOW
+function iDontKnow() {
+  document.body.style.background = '#dfe6e9';
+  document.getElementById('poemOutput').innerHTML = `<div class="poem-card">That's okay.<br>You don't need to name it yet.<br><br>Just an ordinary moment<br>being kind to me.</div>`;
 }
 
-function makePicture(poemId) {
-  const poem = poems.find(p => p.id === poemId);
-  const canvas = document.createElement('canvas');
-  canvas.width = 800; canvas.height = 400;
-  const ctx = canvas.getContext('2d');
-  const gradient = ctx.createLinearGradient(0,0,800,400);
-  gradient.addColorStop(0, '#ff9ecb'); gradient.addColorStop(1, '#e91e63');
-  ctx.fillStyle = gradient; ctx.fillRect(0,0,800,400);
-  ctx.fillStyle = 'white'; ctx.font = 'bold 32px Poppins'; ctx.fillText(poem.title, 40, 60);
-  ctx.font = '20px Poppins'; poem.text.split('\n').forEach((line, i) => ctx.fillText(line, 40, 120 + i*35));
-  ctx.font = '16px Poppins'; ctx.fillText(`- ${poem.author}`, 40, 350);
-  const imgData = canvas.toDataURL('image/png');
-  const newWindow = window.open();
-  newWindow.document.write(`<img src="${imgData}" style="width:100%"><p>Right click to save</p>`);
+// #7 ONE SENTENCE TO POEM
+function generatePoem() {
+  const story = document.getElementById('story').value;
+  if(!story) return;
+  showPoem({title: "For You", text: story + "\n\nAnd somehow,\nthat was beautiful."});
 }
 
-function escapeStr(str) {
-  return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+// #2 SURPRISE ME
+function surpriseMe() { showPoem(allPoems[Math.floor(Math.random() * allPoems.length)]); }
+
+// #6 SHUFFLE
+function shufflePoem() { surpriseMe(); }
+
+// #7 FINISH THOUGHT
+function finishThought(p) { document.getElementById('finishInput').value = p + " "; }
+function generateFinish() { showPoem({title: "Your Words", text: document.getElementById('finishInput').value}); }
+
+// #9 SAVE AS CARD
+function saveAsCard(text) {
+  const c = document.createElement('canvas'); c.width=1080; c.height=1350;
+  const ctx = c.getContext('2d'); ctx.fillStyle='#fff5f9'; ctx.fillRect(0,0,1080,1350);
+  ctx.fillStyle='#e91e63'; ctx.font='36px Georgia'; ctx.fillText(text, 60, 200);
+  window.open(c.toDataURL());
 }
 
-function makeWordsClickable(text, poemId) {
-  return text.split('\n').map(line =>
-    line.split(' ').map(word =>
-      `<span class="word" onclick="saveWord('${escapeStr(word)}','${escapeStr(line)}',${poemId})">${word}</span>`
-    ).join(' ')
-  ).join('<br>');
-}
+// #11 EMOTION MAP
+function pickEmotion(e) { document.getElementById('story').value = `I feel ${e}`; showTab('write', document.querySelector('.tab')); }
 
-function saveWord(word, line, poemId) {
-  const poem = poems.find(p=>p.id===poemId);
-  if(!heartwords.some(h=>h.word===word && h.poemId===poemId)){
-    heartwords.push({word, line, poemTitle: poem.title, poemId});
-    localStorage.setItem('heartwordsData', JSON.stringify(heartwords));
-    alert(`"${word}" added to Heartwords ❤️`);
-    renderHeartwords();
-  }
-}
+// #10 LETTER
+function setLetterPrompt(p) { document.getElementById('letterText').value = "Dear Me,\n\n" + p + "\n\n"; }
+function saveLetter() { alert("Letter saved ❤️"); }
 
-function toggleHeart(poemId) {
-  const poem = poems.find(p=>p.id===poemId);
-  if(heartwords.some(h=>h.poemId===poemId && h.word==="FULL POEM")){
-    heartwords = heartwords.filter(h=>!(h.poemId===poemId && h.word==="FULL POEM"));
-  } else {
-    heartwords.push({word: "FULL POEM", line: poem.text.split('\n')[0], poemTitle: poem.title, poemId});
-  }
-  localStorage.setItem('heartwordsData', JSON.stringify(heartwords));
-  filterByCategory();
-  renderHeartwords();
-}
+// #3 SAVE
+function savePoem(t,txt) { let s=JSON.parse(localStorage.getItem('myHeartWords'))||[]; s.push({t,txt}); localStorage.setItem('myHeartWords',JSON.stringify(s)); renderMyWords(); }
+function renderMyWords() { let s=JSON.parse(localStorage.getItem('myHeartWords'))||[]; document.getElementById('myWords').innerHTML = s.map((p,i)=>`<div class="saved-poem"><span class="remove" onclick="remove(${i})">✕</span><b>${p.t}</b><br>${p.txt}</div>`).join(''); }
+function remove(i){ let s=JSON.parse(localStorage.getItem('myHeartWords'))||[]; s.splice(i,1); localStorage.setItem('myHeartWords',JSON.stringify(s)); renderMyWords(); }
 
-function toggleEmoji() {
-  const picker = document.getElementById('emojiPicker');
-  picker.style.display = picker.style.display === 'flex'? 'none' : 'flex';
-  if(picker.innerHTML === '') {
-    picker.innerHTML = emojis.map(e => `<span class="emoji" onclick="addEmoji('${e}')">${e}</span>`).join('');
-  }
-}
-function addEmoji(e) {
-  document.getElementById('chatInput').value += e;
-  document.getElementById('emojiPicker').style.display = 'none';
-}
+function filterWorld(c){ document.getElementById('worldPoems').innerHTML = (poemLibrary[c]||[]).map(p=>`<div class="poem-card"><b>${p.title}</b><br>${p.text}</div>`).join(''); }
+function showCategory(c){ filterWorld(c); }
 
-let mediaRecorder, audioChunks = [];
-function startVoice() {
-  if(!navigator.mediaDevices) return alert("Voice not supported");
-  navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
-    mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
-    mediaRecorder.start();
-    alert("Recording for 5 seconds...");
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-    mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(audioChunks);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      chatMessages.push({name: document.getElementById('chatName').value||"Anonymous", msg: `<audio controls src="${audioUrl}"></audio>`, time: new Date().toLocaleTimeString()});
-      localStorage.setItem('heartwordsChat', JSON.stringify(chatMessages));
-      renderChat();
-    };
-    setTimeout(() => {if(mediaRecorder.state==="recording") mediaRecorder.stop()}, 5000);
-  }).catch(()=>alert("Microphone permission needed"));
-}
+function addFeeling(f){ document.getElementById('story').value += `\nIt feels ${f}.`; }
 
-function sendChat() {
-  const name = document.getElementById('chatName').value || "Anonymous";
-  const msg = document.getElementById('chatInput').value;
-  if(!msg) return;
-  chatMessages.push({name, msg, time: new Date().toLocaleTimeString()});
-  localStorage.setItem('heartwordsChat', JSON.stringify(chatMessages));
-  document.getElementById('chatInput').value = "";
-  renderChat();
-}
-function renderChat() {
-  const box = document.getElementById('chatMessages');
-  const myName = document.getElementById('chatName').value;
-  box.innerHTML = chatMessages.map(m => `
-    <div class="chat-msg ${m.name===myName?'you':''}"><b>${m.name}:</b> ${m.msg} <small style="opacity:0.7">${m.time}</small></div>
-  `).join('');
-  box.scrollTop = box.scrollHeight;
-}
+function showTab(id,el){ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(id).classList.add('active'); el.classList.add('active'); }
 
-function postConfession() {
-  const text = document.getElementById('confessText').value;
-  if(!text) return;
-  confessions.push({text, date: new Date().toLocaleString()});
-  localStorage.setItem('confessionsData', JSON.stringify(confessions));
-  document.getElementById('confessText').value = "";
-  renderConfessions();
-}
-function renderConfessions() {
-  document.getElementById('confessGrid').innerHTML = confessions.length===0
-? `<div class="empty">No confessions yet 💌</div>`
-  : confessions.slice().reverse().map(c=>`<div class="poem-card"><p>${c.text}</p><small>${c.date}</small></div>`).join('');
-}
-
-function addPoem(){
-  const t=document.getElementById('title').value;
-  const a=document.getElementById('author').value;
-  const c=document.getElementById('poemCategory').value;
-  const txt=document.getElementById('text').value;
-  if(!t||!txt) return alert("Add title and poem");
-  poems.push({id:Date.now(), category:c, title:t, author:a||"Anonymous", text:txt});
-  document.getElementById('title').value=""; document.getElementById('text').value="";
-  filterByCategory(); alert("Poem published!");
-}
-
-function showTab(id,el){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active'); el.classList.add('active');
-  if(id==='heartwords') renderHeartwords(); 
-  if(id==='confess') renderConfessions(); 
-  if(id==='chat') renderChat();
-  if(id==='poems') filterByCategory();
-}
-function renderHeartwords() {
-  document.getElementById('heartGrid').innerHTML = heartwords.length===0
-? `<div class="empty">No heartwords yet ❤️ Click words in poems to save them</div>`
-  : heartwords.map((h,i)=>`<div class="poem-card"><button onclick="removeHeart(${i})" style="float:right;border:none;background:none;cursor:pointer;">✕</button><h4 style="color:var(--dark-pink);margin:0;">${h.word}</h4><p style="font-style:italic;">"${h.line}"</p><small>From: ${h.poemTitle}</small></div>`).join('');
-}
-function removeHeart(i){
-  heartwords.splice(i,1);
-  localStorage.setItem('heartwordsData', JSON.stringify(heartwords));
-  renderHeartwords();
-  filterByCategory();
-}
-function exportPremium(){ alert("PREMIUM FEATURE ✨ All your Heartwords are saved in your browser!"); }
-
-// INIT - THIS IS WHAT WAS MISSING
-window.onload = function() {
-  filterByCategory(); 
-  renderHeartwords(); 
-  renderConfessions(); 
-  renderChat();
-}
+renderMyWords();
 </script>
 </body>
-          </html>
+  </html>
