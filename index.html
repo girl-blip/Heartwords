@@ -3,51 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heartwords - Premium Poetry + Chat + Voice</title>
+<title>Heartwords - Premium Poetry</title>
 <style>
   :root { --pink: #ff9ecb; --dark-pink: #e91e63; --gold: #FFD700; --bg: #fff5f9; }
+    * { box-sizing: border-box; }
   body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; color: #333; }
   header { background: linear-gradient(135deg, var(--pink), var(--dark-pink)); color: white; text-align: center; padding: 30px 20px; position: relative; }
- .premium-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+  .premium-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+  
+  .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
+  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab { padding: 10px 20px; border: 2px solid var(--dark-pink); border-radius: 20px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
+  .tab.active { background: var(--dark-pink); color: white; }
 
- .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
- .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
- .tab { padding: 10px 20px; border: 2px solid var(--dark-pink); border-radius: 20px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
- .tab.active { background: var(--dark-pink); color: white; }
+  .poem-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(233,30,99,0.1); position: relative; }
+  .poem-title { color: var(--dark-pink); font-size: 1.4em; margin: 0 0 5px; }
+  .poem-author { color: #888; font-style: italic; margin-bottom: 15px; }
+  .poem-text { white-space: pre-line; line-height: 1.8; }
 
- .poem-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(233,30,99,0.1); position: relative; }
- .poem-title { color: var(--dark-pink); font-size: 1.4em; margin: 0 0 5px; }
- .poem-author { color: #888; font-style: italic; margin-bottom: 15px; }
- .poem-text { white-space: pre-line; line-height: 1.8; }
-
- .heart-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; cursor: pointer; color: #ddd; transition: all 0.3s; }
- .heart-btn:hover { transform: scale(1.3); }
- .heart-btn.active { color: var(--dark-pink); animation: pop 0.3s; }
+  .heart-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; cursor: pointer; color: #ddd; transition: all 0.3s; user-select: none; }
+  .heart-btn:hover { transform: scale(1.3); }
+  .heart-btn.active { color: var(--dark-pink); animation: pop 0.3s; }
   @keyframes pop { 50%{transform:scale(1.4)} }
 
- .word { cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: 0.2s; }
- .word:hover { background: #ffe0eb; }
+  .word { cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: 0.2s; }
+  .word:hover { background: #ffe0eb; }
 
- .section { display: none; }
- .section.active { display: block; }
- .empty { text-align: center; color: #999; padding: 50px 20px; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .empty { text-align: center; color: #999; padding: 50px 20px; }
 
   textarea, input, select { width: 100%; padding: 12px; border: 2px solid #ffd6e8; border-radius: 8px; margin-bottom: 10px; font-family: inherit; }
- .btn { background: var(--dark-pink); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-right: 10px; }
- .btn.premium { background: var(--gold); color: #000; }
- .btn.voice { background: #9c27b0; }
+  .btn { background: var(--dark-pink); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-right: 10px; margin-top: 10px; }
+  .btn.premium { background: var(--gold); color: #000; }
+  .btn.voice { background: #9c27b0; }
+  .btn.picture { background: #9c27b0; }
 
-  /* CHAT + EMOJI */
- .chat-box { background: white; border-radius: 15px; padding: 15px; height: 400px; display: flex; flex-direction: column; }
- .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #fff0f5; border-radius: 10px; margin-bottom: 10px; }
- .chat-msg { background: #ffe0eb; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; max-width: 80%; }
- .chat-msg.you { background: var(--dark-pink); color: white; margin-left: auto; }
- .chat-input { display: flex; gap: 10px; align-items: center; }
- .emoji-picker { display: none; position: absolute; background: white; border: 2px solid var(--pink); border-radius: 10px; padding: 10px; gap: 5px; flex-wrap: wrap; width: 250px; }
- .emoji { cursor: pointer; font-size: 24px; padding: 5px; }
- .emoji:hover { background: #ffe0eb; border-radius: 5px; }
-
- .poem-picture { width: 100%; border-radius: 15px; margin-top: 15px; }
+  .chat-box { background: white; border-radius: 15px; padding: 15px; height: 400px; display: flex; flex-direction: column; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #fff0f5; border-radius: 10px; margin-bottom: 10px; }
+  .chat-msg { background: #ffe0eb; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; max-width: 80%; word-wrap: break-word; }
+  .chat-msg.you { background: var(--dark-pink); color: white; margin-left: auto; }
+  .chat-input { display: flex; gap: 10px; align-items: center; position: relative; flex-wrap: wrap; }
+  .emoji-picker { display: none; position: absolute; bottom: 50px; right: 0; background: white; border: 2px solid var(--pink); border-radius: 10px; padding: 10px; gap: 5px; flex-wrap: wrap; width: 250px; z-index: 10; }
+  .emoji { cursor: pointer; font-size: 24px; padding: 5px; }
+  .emoji:hover { background: #ffe0eb; border-radius: 5px; }
+  .poem-picture { width: 100%; border-radius: 15px; margin-top: 15px; }
 </style>
 </head>
 <body>
@@ -96,9 +96,9 @@
     <h2>Heartwords Chat Room 💬</h2>
     <div class="chat-box">
       <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-input" style="position:relative;">
-        <input type="text" id="chatName" placeholder="Your nickname" maxlength="15">
-        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendChat()">
+      <div class="chat-input">
+        <input type="text" id="chatName" placeholder="Your nickname" maxlength="15" style="flex:1 1 120px">
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendChat()" style="flex:2 1 200px">
         <button class="btn" onclick="toggleEmoji()">😊</button>
         <button class="btn voice" onclick="startVoice()">🎤</button>
         <button class="btn" onclick="sendChat()">Send</button>
@@ -121,22 +121,220 @@
 </div>
 
 <script>
-// 100+ CUTE WORDS FOR ALL POEMS
-const cuteWords = "sparkle glow magic boba purr bunny mochi cloud whisker nap strawberry cupcake glitter rainbow fairy dreamy cozy snuggle teddy marshmallow sunshine twinkle giggle blush cuddle waddle wiggly squishy snuggly daisy tulip cherry blossom lavender honeycomb cupcake sprinkle confetti popcorn kitten puppy hamster fox bunny duckling starlight moonbeam aurora firefly lightning raincloud rainbow unicorn mermaid pixie elf gnome wizard magic spell enchanted whimsy playful cheeky silly goofy cutie sweetie honey darling precious angel dove butterfly ladybug bumblebee puppy doggo meow paws tail fluff soft fuzzy cuddly warm hugs kisses love peace joy hope faith trust brave strong gentle kind sweet tender warm heart soul spirit";
-
-// 50+ POEMS FOR ALL CATEGORIES
+// COMPLETE POEM DATA - 25 POEMS
 let poems = [
-  // LOVE - 10
-  {id: 1, category: "love", title: "Heaven Sent", author: "Anonymous", text: `You walked in like sunshine\nand made my grey days\nfeel like home.\n${cuteWords.split(' ').slice(0,5).join('. ')}.`},
-  {id: 2, category: "love", title: "Cotton Candy Dreams", author: "Luna", text: `sweet. fluffy. pink.\nyour laugh tastes like\ncotton candy and summer.\n${cuteWords.split(' ').slice(5,10).join('. ')}.`},
+  {id: 1, category: "love", title: "Heaven Sent", author: "Anonymous", text: "You walked in like sunshine\nand made my grey days\nfeel like home.\nsparkle. glow. magic."},
+  {id: 2, category: "love", title: "Cotton Candy Dreams", author: "Luna", text: "sweet. fluffy. pink.\nyour laugh tastes like\ncotton candy and summer.\nbunny. mochi. cloud."},
+  {id: 3, category: "love", title: "Strawberry Kisses", author: "Ari", text: "your lips taste like\nstrawberries in june.\nsweet. soft. us."},
+  {id: 4, category: "love", title: "Starlight", author: "Sky", text: "You are my favorite\nconstellation.\nI get lost in you."},
+  {id: 5, category: "love", title: "Coffee for Two", author: "Morning", text: "Two cups. One table.\nYour hand in mine.\nPerfect morning."},
   
-  // GRIEF - 10  
-  {id: 3, category: "grief", title: "Empty Chair", author: "Ari", text: `The chair is still warm\nbut you are not here.\nsilence. ache. missing.\n${cuteWords.split(' ').slice(10,15).join('. ')}.`},
-  {id: 4, category: "grief", title: "Rain on Windows", author: "Maya", text: `Rain keeps crying\nfor me.\ntears. grey. alone.\n${cuteWords.split(' ').slice(15,20).join('. ')}.`},
-  {id: 5, category: "grief", title: "Folded Letters", author: "Sam", text: `I keep your letters\nfolded in my chest.\nink. memories. pain.`},
-  {id: 6, category: "grief", title: "Ghost of You", author: "Noor", text: `I see you\nin every crowd.\nthen realize\nit’s not you.`},
-  {id: 7, category: "grief", title: "Goodbye Unsent", author: "Lee", text: `I wrote goodbye\n100 times.\nnever sent one.`},
-  {id: 8, category: "grief", title: "Quiet House", author: "Kim", text: `The house is too quiet\nwithout your laugh.\necho. hollow. gone.`},
+  {id: 6, category: "grief", title: "Empty Chair", author: "Ari", text: "The chair is still warm\nbut you are not here.\nsilence. ache. missing."},
+  {id: 7, category: "grief", title: "Rain on Windows", author: "Maya", text: "Rain keeps crying\nfor me.\ntears. grey. alone."},
+  {id: 8, category: "grief", title: "Folded Letters", author: "Sam", text: "I keep your letters\nfolded in my chest.\nink. memories. pain."},
+  {id: 9, category: "grief", title: "Ghost of You", author: "Noor", text: "I see you\nin every crowd.\nthen realize\nit’s not you."},
+  {id: 10, category: "grief", title: "Goodbye Unsent", author: "Lee", text: "I wrote goodbye\n100 times.\nnever sent one."},
   
-  // HEALING - 10
-  {id: 9, category: "healing", title: "Night Thoughts", author: "Maya", text: `The moon keeps secrets\nand I keep telling it mine.\nsoft. quiet. stars
+  {id: 11, category: "healing", title: "Night Thoughts", author: "Maya", text: "The moon keeps secrets\nand I keep telling it mine.\nsoft. quiet. stars."},
+  {id: 12, category: "healing", title: "Growing", author: "Rose", text: "I am learning\nto water myself.\nbloom. patience. me."},
+  {id: 13, category: "healing", title: "After the Storm", author: "Hope", text: "The rain stopped.\nI am still here.\nstronger. new. me."},
+  {id: 14, category: "healing", title: "Breathe", author: "Calm", text: "In. Out.\nYou are okay.\nRight now is enough."},
+  {id: 15, category: "healing", title: "Sunrise", author: "New Day", text: "Darkness ends.\nLight returns.\nSo will you."},
+  
+  {id: 16, category: "cute", title: "Bubble Tea Love", author: "Ari", text: "boba. boba. boba.\nstraw in hand, heart in yours.\nchewy. cute. us."},
+  {id: 17, category: "cute", title: "Kitten Paws", author: "Meow", text: "tiny. soft. purr.\nyou fit right in my pocket\nand my heart.\nwhisker. nap. love."},
+  {id: 18, category: "cute", title: "Puppy Eyes", author: "Doggo", text: "big eyes. wagging tail.\nyou are my whole world\nin 4 little paws."},
+  {id: 19, category: "cute", title: "Mochi", author: "Sweet", text: "squishy. soft. sweet.\nlike you.\nmy little mochi."},
+  {id: 20, category: "cute", title: "Rainbow", author: "Colors", text: "after rain comes\nrainbow. glitter. joy.\nyou make me that."},
+  
+  {id: 21, category: "motor", title: "Motor Heart", author: "You", text: "Engine roaring\nheart racing\nfreedom tastes like\nopen road.\nvroom. wind. fly."},
+  {id: 22, category: "motor", title: "Midnight Drive", author: "Rider", text: "Headlights cut the dark\nmusic up. windows down.\njust me and the road."},
+  {id: 23, category: "motor", title: "Speed", author: "Fast", text: "Adrenaline. Asphalt.\nWind in my hair.\nAlive."},
+  {id: 24, category: "motor", title: "Garage Days", author: "Wrench", text: "Oil on my hands\nlove in my heart.\nbuilding dreams."},
+  {id: 25, category: "motor", title: "Open Road", author: "Wander", text: "No destination.\nJust drive.\nJust be free."}
+];
+
+let heartwords = JSON.parse(localStorage.getItem('heartwordsData')) || [];
+let confessions = JSON.parse(localStorage.getItem('confessionsData')) || [];
+let chatMessages = JSON.parse(localStorage.getItem('heartwordsChat')) || [];
+const emojis = ['❤️','😭','✨','💕','🥺','😊','🌸','🌙','⭐','💫','🦋','🐰','🍓','☁️','🎀'];
+
+function filterByCategory() {
+  const cat = document.getElementById('categorySelect').value;
+  const filtered = cat === 'all'? poems : poems.filter(p => p.category === cat);
+  renderPoems(filtered);
+}
+
+function renderPoems(data = poems) {
+  if(data.length === 0) {
+    document.getElementById('poemsGrid').innerHTML = `<div class="empty">No poems in this category yet</div>`;
+    return;
+  }
+  document.getElementById('poemsGrid').innerHTML = data.map(p => `
+    <div class="poem-card">
+      <div class="heart-btn ${heartwords.some(h=>h.poemId===p.id)?'active':''}" onclick="toggleHeart(${p.id})">❤️</div>
+      <h3 class="poem-title">${p.title}</h3>
+      <div class="poem-author">by ${p.author} • ${p.category}</div>
+      <div class="poem-text" id="text-${p.id}">${makeWordsClickable(p.text, p.id)}</div>
+      <button class="btn picture" onclick="makePicture(${p.id})">🎨 Turn into Picture</button>
+    </div>
+  `).join('');
+}
+
+function makePicture(poemId) {
+  const poem = poems.find(p => p.id === poemId);
+  const canvas = document.createElement('canvas');
+  canvas.width = 800; canvas.height = 400;
+  const ctx = canvas.getContext('2d');
+  const gradient = ctx.createLinearGradient(0,0,800,400);
+  gradient.addColorStop(0, '#ff9ecb'); gradient.addColorStop(1, '#e91e63');
+  ctx.fillStyle = gradient; ctx.fillRect(0,0,800,400);
+  ctx.fillStyle = 'white'; ctx.font = 'bold 32px Poppins'; ctx.fillText(poem.title, 40, 60);
+  ctx.font = '20px Poppins'; poem.text.split('\n').forEach((line, i) => ctx.fillText(line, 40, 120 + i*35));
+  ctx.font = '16px Poppins'; ctx.fillText(`- ${poem.author}`, 40, 350);
+  const imgData = canvas.toDataURL('image/png');
+  const newWindow = window.open();
+  newWindow.document.write(`<img src="${imgData}" style="width:100%"><p>Right click to save</p>`);
+}
+
+function escapeStr(str) {
+  return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+function makeWordsClickable(text, poemId) {
+  return text.split('\n').map(line =>
+    line.split(' ').map(word =>
+      `<span class="word" onclick="saveWord('${escapeStr(word)}','${escapeStr(line)}',${poemId})">${word}</span>`
+    ).join(' ')
+  ).join('<br>');
+}
+
+function saveWord(word, line, poemId) {
+  const poem = poems.find(p=>p.id===poemId);
+  if(!heartwords.some(h=>h.word===word && h.poemId===poemId)){
+    heartwords.push({word, line, poemTitle: poem.title, poemId});
+    localStorage.setItem('heartwordsData', JSON.stringify(heartwords));
+    alert(`"${word}" added to Heartwords ❤️`);
+    renderHeartwords();
+  }
+}
+
+function toggleHeart(poemId) {
+  const poem = poems.find(p=>p.id===poemId);
+  if(heartwords.some(h=>h.poemId===poemId && h.word==="FULL POEM")){
+    heartwords = heartwords.filter(h=>!(h.poemId===poemId && h.word==="FULL POEM"));
+  } else {
+    heartwords.push({word: "FULL POEM", line: poem.text.split('\n')[0], poemTitle: poem.title, poemId});
+  }
+  localStorage.setItem('heartwordsData', JSON.stringify(heartwords));
+  filterByCategory();
+  renderHeartwords();
+}
+
+function toggleEmoji() {
+  const picker = document.getElementById('emojiPicker');
+  picker.style.display = picker.style.display === 'flex'? 'none' : 'flex';
+  if(picker.innerHTML === '') {
+    picker.innerHTML = emojis.map(e => `<span class="emoji" onclick="addEmoji('${e}')">${e}</span>`).join('');
+  }
+}
+function addEmoji(e) {
+  document.getElementById('chatInput').value += e;
+  document.getElementById('emojiPicker').style.display = 'none';
+}
+
+let mediaRecorder, audioChunks = [];
+function startVoice() {
+  if(!navigator.mediaDevices) return alert("Voice not supported");
+  navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.start();
+    alert("Recording for 5 seconds...");
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      chatMessages.push({name: document.getElementById('chatName').value||"Anonymous", msg: `<audio controls src="${audioUrl}"></audio>`, time: new Date().toLocaleTimeString()});
+      localStorage.setItem('heartwordsChat', JSON.stringify(chatMessages));
+      renderChat();
+    };
+    setTimeout(() => {if(mediaRecorder.state==="recording") mediaRecorder.stop()}, 5000);
+  }).catch(()=>alert("Microphone permission needed"));
+}
+
+function sendChat() {
+  const name = document.getElementById('chatName').value || "Anonymous";
+  const msg = document.getElementById('chatInput').value;
+  if(!msg) return;
+  chatMessages.push({name, msg, time: new Date().toLocaleTimeString()});
+  localStorage.setItem('heartwordsChat', JSON.stringify(chatMessages));
+  document.getElementById('chatInput').value = "";
+  renderChat();
+}
+function renderChat() {
+  const box = document.getElementById('chatMessages');
+  const myName = document.getElementById('chatName').value;
+  box.innerHTML = chatMessages.map(m => `
+    <div class="chat-msg ${m.name===myName?'you':''}"><b>${m.name}:</b> ${m.msg} <small style="opacity:0.7">${m.time}</small></div>
+  `).join('');
+  box.scrollTop = box.scrollHeight;
+}
+
+function postConfession() {
+  const text = document.getElementById('confessText').value;
+  if(!text) return;
+  confessions.push({text, date: new Date().toLocaleString()});
+  localStorage.setItem('confessionsData', JSON.stringify(confessions));
+  document.getElementById('confessText').value = "";
+  renderConfessions();
+}
+function renderConfessions() {
+  document.getElementById('confessGrid').innerHTML = confessions.length===0
+? `<div class="empty">No confessions yet 💌</div>`
+  : confessions.slice().reverse().map(c=>`<div class="poem-card"><p>${c.text}</p><small>${c.date}</small></div>`).join('');
+}
+
+function addPoem(){
+  const t=document.getElementById('title').value;
+  const a=document.getElementById('author').value;
+  const c=document.getElementById('poemCategory').value;
+  const txt=document.getElementById('text').value;
+  if(!t||!txt) return alert("Add title and poem");
+  poems.push({id:Date.now(), category:c, title:t, author:a||"Anonymous", text:txt});
+  document.getElementById('title').value=""; document.getElementById('text').value="";
+  filterByCategory(); alert("Poem published!");
+}
+
+function showTab(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active'); el.classList.add('active');
+  if(id==='heartwords') renderHeartwords(); 
+  if(id==='confess') renderConfessions(); 
+  if(id==='chat') renderChat();
+  if(id==='poems') filterByCategory();
+}
+function renderHeartwords() {
+  document.getElementById('heartGrid').innerHTML = heartwords.length===0
+? `<div class="empty">No heartwords yet ❤️ Click words in poems to save them</div>`
+  : heartwords.map((h,i)=>`<div class="poem-card"><button onclick="removeHeart(${i})" style="float:right;border:none;background:none;cursor:pointer;">✕</button><h4 style="color:var(--dark-pink);margin:0;">${h.word}</h4><p style="font-style:italic;">"${h.line}"</p><small>From: ${h.poemTitle}</small></div>`).join('');
+}
+function removeHeart(i){
+  heartwords.splice(i,1);
+  localStorage.setItem('heartwordsData', JSON.stringify(heartwords));
+  renderHeartwords();
+  filterByCategory();
+}
+function exportPremium(){ alert("PREMIUM FEATURE ✨ All your Heartwords are saved in your browser!"); }
+
+// INIT - THIS IS WHAT WAS MISSING
+window.onload = function() {
+  filterByCategory(); 
+  renderHeartwords(); 
+  renderConfessions(); 
+  renderChat();
+}
+</script>
+</body>
+          </html>
