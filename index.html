@@ -1,146 +1,343 @@
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HeartWords - Premium Poetry</title>
+<title>HeartWords - Some feelings were never meant to stay unspoken</title>
 <style>
   :root { --pink: #ff9ecb; --dark-pink: #e91e63; --gold: #FFD700; --bg: #fff5f9; }
     * { box-sizing: border-box; }
-  body { font-family: 'Poppins', Arial, sans-serif; background: var(--bg); margin: 0; color: #333; }
-  header { background: linear-gradient(135deg, var(--pink), var(--dark-pink)); color: white; text-align: center; padding: 30px 20px; position: relative; }
-  .premium-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-  .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
-  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab { padding: 10px 20px; border: 2px solid var(--dark-pink); border-radius: 20px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
-  .tab.active { background: var(--dark-pink); color: white; }
-  .poem-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(233,30,99,0.1); position: relative; }
-  .poem-title { color: var(--dark-pink); font-size: 1.4em; margin: 0 0 5px; }
-  .poem-author { color: #888; font-size: 0.9em; margin-bottom: 10px; }
-  .poem-text { white-space: pre-line; line-height: 1.8; }
-  .heart-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; cursor: pointer; color: #ddd; transition: 0.2s; }
-  .heart-btn.active { color: var(--dark-pink); }
-  .section { display: none; }
-  .section.active { display: block; }
-  .empty { text-align: center; color: #999; padding: 50px 20px; }
-  textarea, input, select { width: 100%; padding: 12px; border: 2px solid #ffd6e8; border-radius: 8px; margin-bottom: 10px; font-family: inherit; }
-  .btn { background: var(--dark-pink); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
+  body { font-family: 'Georgia', serif; background: var(--bg); margin: 0; color: #2d2d2d; transition: background 1s; }
 
-  /* ONLY NEW THING: CHAT STYLES */
-  .chat-box { background: white; border-radius: 15px; padding: 15px; height: 500px; display: flex; flex-direction: column; }
-  .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: #fff0f5; border-radius: 10px; margin-bottom: 10px; }
-  .chat-msg { background: #ffe0eb; padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; max-width: 80%; }
-  .chat-msg.you { background: var(--dark-pink); color: white; margin-left: auto; }
-  .chat-input { display: flex; gap: 10px; }
-  .online-dot { width: 8px; height: 8px; background: #00b894; border-radius: 50%; display: inline-block; margin-right: 5px; }
+  #welcome { position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(180deg, #fff5f9, #ffe0eb); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; text-align:center; padding:20px; }
+  #welcome h1 { font-size: 3em; margin:0; letter-spacing: 2px; }
+  #welcome p { font-style: italic; font-size: 1.2em; margin: 10px 0 30px; }
+.enter-btn { background: var(--dark-pink); color:white; padding: 14px 30px; border-radius: 25px; border:none; font-size:1.1em; cursor:pointer; font-family: 'Courier New', monospace; }
+
+  header { background: white; padding: 25px; text-align: center; border-bottom: 1px solid #ffd6e8; }
+.container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
+
+.heartword-day { background: white; padding: 25px; border-radius: 20px; margin: 20px auto; text-align: center; box-shadow: 0 4px 20px rgba(233,30,99,0.1); }
+.heartword-day.word { font-size: 2.5em; font-weight: bold; color: var(--dark-pink); }
+
+.worlds { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0; }
+.world { background: white; padding: 20px; border-radius: 12px; border-left: 4px solid var(--dark-pink); cursor: pointer; }
+.world h3 { margin: 0 0 5px; color: var(--dark-pink); }
+.world p { margin: 0; font-size: 0.9em; color: #666; font-style: italic; }
+
+.archive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+.collection { background: white; padding: 20px; border-radius: 12px; text-align: center; cursor:pointer; }
+
+.emotion-map { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.emotion-group { background: white; padding: 20px; border-radius: 15px; min-width: 200px; }
+.emotion-group button { display: block; width: 100%; text-align: left; background: #ffe0eb; border: none; padding: 10px; margin: 6px 0; border-radius: 8px; cursor: pointer; }
+
+.poem-card { background: white; padding: 30px; border-radius: 15px; margin: 20px 0; border-left: 4px solid var(--pink); line-height: 1.9; font-size: 1.1em; }
+.poem-line { opacity: 0; animation: fadeIn 0.8s forwards; }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  textarea, input { width: 100%; padding: 14px; border: 2px solid #ffd6e8; border-radius: 10px; margin: 10px 0; font-family: inherit; }
+.btn { background: var(--dark-pink); color: white; border: none; padding: 14px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; margin: 5px; }
+.btn.dontknow { background: #6c5ce7; width: 100%; font-size: 1.1em; }
+.btn.secondary { background: #aaa; }
+.btn.surprise { background: #00b894; }
+.btn.delete { background: #ff4d4d; padding: 4px 8px; font-size:0.8em; margin-left:10px; }
+
+.feeling-tags button { background: #ffe0eb; border: none; padding: 8px 14px; border-radius: 20px; margin: 5px; cursor: pointer; }
+
+.section { display: none; }
+.section.active { display: block; }
+.tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+.tab { padding: 12px 22px; border: 2px solid var(--dark-pink); border-radius: 25px; background: white; color: var(--dark-pink); cursor: pointer; font-weight: 600; }
+.tab.active { background: var(--dark-pink); color: white; }
+
+.saved-poem { background: #fff0f5; padding: 15px; border-radius: 10px; margin: 10px 0; position: relative; white-space: pre-line; }
+.remove { position: absolute; top: 10px; right: 15px; cursor: pointer; }
+
+  #chatMessages { height:350px; overflow-y:auto; background:#fff5f9; padding:10px; border-radius:10px; margin-bottom:10px; }
+.chat-msg { padding: 10px; border-bottom: 1px solid #ffe0eb; text-align:left; position:relative; }
+.chat-meta { font-size:0.75em; color:#888; margin-left:8px; }
+.username-box { display:flex; gap:10px; margin-bottom:10px; }
+.typing { font-style: italic; color: #e91e63; font-size:0.9em; padding:5px 10px; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="premium-badge">PREMIUM ✨</div>
-  <h1>Heartwords</h1>
-  <p>Save the words that touch your heart</p>
-</header>
+<!-- #1 OPENING SCREEN -->
+<div id="welcome">
+  <h1>HEARTWORDS</h1>
+  <p>Some feelings were never meant to stay unspoken.</p>
+  <button class="enter-btn" onclick="document.getElementById('welcome').style.display='none'">enter quietly →</button>
+</div>
+
+<header><h1>HeartWords</h1></header>
+
+<!-- #12 HEARTWORD OF THE DAY -->
+<div class="heartword-day">
+  <h3>THE HEARTWORD OF THE DAY</h3>
+  <div class="word" id="dailyWord">Bittersweet</div>
+  <p id="dailyMeaning">Something can be beautiful and still hurt to remember.</p>
+</div>
 
 <div class="container">
   <div class="tabs">
-    <div class="tab active" onclick="showTab('poems', this)">Poems</div>
-    <div class="tab" onclick="showTab('write', this)">Write</div>
-    <div class="tab" onclick="showTab('heartwords', this)">❤️ Heartwords</div>
-    <div class="tab" onclick="showTab('chat', this)">💬 Live Chat</div> <!-- ONLY NEW TAB -->
+    <div class="tab active" onclick="showTab('write', this)">Write</div>
+    <div class="tab" onclick="showTab('worlds', this)">Worlds</div>
+    <div class="tab" onclick="showTab('archive', this)">Archive</div>
+    <div class="tab" onclick="showTab('emotion', this)">🧠 Map</div>
+    <div class="tab" onclick="showTab('letter', this)">🪞 Letter</div>
+    <div class="tab" onclick="showTab('saved', this)">♡ Saved</div>
+    <div class="tab" onclick="showTab('chat', this)">💬 Live Chat</div>
   </div>
 
-  <div id="poems" class="section active">
-    <div id="poemsGrid"></div>
+  <!-- WRITE TAB: #3 + #6 + #7 + #11 -->
+  <div id="write" class="section active">
+    <button class="btn surprise" onclick="surpriseMe()">🎲 Surprise me</button>
+    <button class="btn dontknow" onclick="iDontKnow()">I DON'T KNOW WHAT I'M FEELING</button>
+
+    <h3>Tell me what happened</h3>
+    <textarea id="story" rows="3" placeholder="[ I don't know how to say it... ]"></textarea>
+    <p><b>What does it feel like?</b></p>
+    <div class="feeling-tags">
+      <button onclick="addFeeling('Heavy')">🌧️ Heavy</button>
+      <button onclick="addFeeling('Quiet')">🕯️ Quiet</button>
+      <button onclick="addFeeling('Burning')">🔥 Burning</button>
+      <button onclick="addFeeling('Overwhelming')">🌊 Overwhelming</button>
+      <button onclick="addFeeling('Healing')">🌱 Healing</button>
+    </div>
+    <button class="btn" onclick="generatePoem()">Create Poem</button>
+
+    <h3 style="margin-top:30px;">Or finish the thought</h3>
+    <button class="btn secondary" onclick="finishThought('I wish I could tell you...')">"I wish I could tell you..."</button>
+    <button class="btn secondary" onclick="finishThought('I never told anyone that...')">"I never told anyone that..."</button>
+    <textarea id="finishInput" rows="2"></textarea>
+    <button class="btn" onclick="generateFinish()">Make it a poem</button>
+
+    <div id="poemOutput"></div>
   </div>
 
-  <div id="write" class="section">
-    <h2>Write a Poem</h2>
-    <input type="text" id="title" placeholder="Poem Title">
-    <input type="text" id="author" placeholder="Your Name">
-    <textarea id="text" rows="6" placeholder="Write your poem here..."></textarea>
-    <select id="category">
-      <option>Love</option><option>Healing</option><option>Heartbreak</option><option>Motivation</option>
-    </select>
-    <button class="btn" onclick="addPoem()">Publish Poem</button>
+  <!-- #2 EMOTIONAL WORLDS -->
+  <div id="worlds" class="section">
+    <h2>Explore by Feeling</h2>
+    <div class="worlds">
+      <div class="world" onclick="filterWorld('love')"><h3>LOVE</h3><p>For the feelings you couldn't quite name.</p></div>
+      <div class="world" onclick="filterWorld('longing')"><h3>LONGING</h3><p>For people, places, and versions of yourself you miss.</p></div>
+      <div class="world" onclick="filterWorld('nostalgia')"><h3>NOSTALGIA</h3><p>For moments that became memories before you noticed.</p></div>
+      <div class="world" onclick="filterWorld('grief')"><h3>GRIEF</h3><p>For endings that don't always have funerals.</p></div>
+      <div class="world" onclick="filterWorld('hope')"><h3>HOPE</h3><p>For the tiny part of you that still believes.</p></div>
+      <div class="world" onclick="filterWorld('anger')"><h3>ANGER</h3><p>For everything you were too quiet about.</p></div>
+    </div>
+    <div id="worldPoems"></div>
   </div>
 
-  <div id="heartwords" class="section">
-    <h2>Your Heartwords</h2>
-    <div id="heartGrid"></div>
+  <!-- #4 THE ARCHIVE -->
+  <div id="archive" class="section">
+    <h2>THE ARCHIVE</h2>
+    <div class="archive-grid">
+      <div class="collection" onclick="showCategory('midnight')"><h4>🌙 Midnight</h4><p>Quiet thoughts</p></div>
+      <div class="collection" onclick="showCategory('yesterday')"><h4>🏠 Yesterday</h4><p>Nostalgia</p></div>
+      <div class="collection" onclick="showCategory('unsaid')"><h4>💌 Unsent</h4><p>Things unsaid</p></div>
+      <div class="collection" onclick="showCategory('becoming')"><h4>🌱 Becoming</h4><p>Growth</p></div>
+      <div class="collection" onclick="showCategory('people')"><h4>👥 People</h4><p>Connection</p></div>
+      <div class="collection" onclick="showCategory('heavy')"><h4>🌧️ Heavy</h4><p>Sadness</p></div>
+      <div class="collection" onclick="showCategory('light')"><h4>☀️ Light</h4><p>Hope</p></div>
+    </div>
+    <div id="archivePoems"></div>
   </div>
 
-  <!-- ONLY NEW SECTION: CHAT -->
-  <div id="chat" class="section">
-    <h2><span class="online-dot"></span>Heartwords Live Chat</h2>
-    <p style="text-align:center;color:#666;">Talk to others who understand 💖</p>
-    <div class="chat-box">
-      <div class="chat-messages" id="chatMessages">Connecting...</div>
-      <div class="chat-input">
-        <input type="text" id="chatName" placeholder="Your nickname" maxlength="15">
-        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendChat()">
-        <button class="btn" onclick="sendChat()">Send</button>
+  <!-- #11 EMOTION MAP -->
+  <div id="emotion" class="section">
+    <h2>What are you feeling?</h2>
+    <div class="emotion-map">
+      <div class="emotion-group"><h4>Sad</h4>
+        <button onclick="pickEmotion('lonely')">lonely</button>
+        <button onclick="pickEmotion('nostalgic')">nostalgic</button>
+        <button onclick="pickEmotion('grieving')">grieving</button>
+      </div>
+      <div class="emotion-group"><h4>Happy</h4>
+        <button onclick="pickEmotion('grateful')">grateful</button>
+        <button onclick="pickEmotion('peaceful')">peaceful</button>
       </div>
     </div>
   </div>
+
+  <!-- #10 LETTER TO MYSELF -->
+  <div id="letter" class="section">
+    <h2>Dear Me,</h2>
+    <button class="btn secondary" onclick="setLetterPrompt('To the younger me...')">To the younger me...</button>
+    <button class="btn secondary" onclick="setLetterPrompt('To the future me...')">To the future me...</button>
+    <textarea id="letterText" rows="8"></textarea>
+    <button class="btn" onclick="saveLetter()">Save Letter</button>
+  </div>
+
+  <!-- #3 MY WORDS -->
+  <div id="saved" class="section">
+    <h2>♡ My Words</h2>
+    <p><i>"Things I wanted to say but couldn't."</i></p>
+    <div id="myWords"></div>
+  </div>
+
+  <!-- LIVE CHAT -->
+  <div id="chat" class="section">
+    <h2>💬 Live HeartWords Chat</h2>
+    <div class="username-box">
+      <input type="text" id="usernameInput" placeholder="Your name..." maxlength="15">
+      <button class="btn" onclick="setUsername()">Save Name</button>
+    </div>
+    <div id="chatMessages"></div>
+    <div id="typingIndicator" class="typing"></div>
+    <input type="text" id="chatInput" placeholder="Share what's on your heart...">
+    <button class="btn" onclick="sendMessage()">Send</button>
+  </div>
+
 </div>
 
-<!-- YOUR FIREBASE + ONLY CHAT JS ADDED -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAjFRvZuwJT_iYW7sWYGbFPCCsjBVE4Fps",
-    authDomain: "heartwords-6b186.firebaseapp.com",
-    databaseURL: "https://heartwords-6b186-default-rtdb.firebaseio.com",
-    projectId: "heartwords-6b186",
-    storageBucket: "heartwords-6b186.firebasestorage.app",
-    messagingSenderId: "137574526790",
-    appId: "1:137574526790:web:71dae3de38f4ec29507f47",
-    measurementId: "G-M8JPXTKLVP"
-  };
+<script>
+// ALL POEMS FROM SCREENSHOTS
+const poemLibrary = {
+  love: [{title: "Before We Knew", text: `We were just two people\nin a crowded room.\n\nAnd then\nwe weren't.`}],
+  nostalgia: [{title: "Back Then", text: `I remember when\nafternoons felt endless,\nwhen home was a place\nand not a photograph.`}],
+  unsaid: [{title: "Almost", text: `I had so many words\nwaiting behind my teeth.\n\nBut the moment came\nand I smiled instead.`}],
+  anger: [{title: "What Remains", text: `I'm angry\nbecause I cared\nand somehow\nthat wasn't enough\nto make you careful\nwith my heart.`}],
+  hope: [{title: "Tomorrow", text: `Maybe tomorrow\nwon't fix everything.\n\nMaybe that's okay.`}],
+  healing: [{title: "Little By Little", text: `I thought healing\nwould feel like becoming\nsomeone new.\n\nInstead,\nit feels like finding\npieces of myself.`}],
+  people: [{title: "Still Here", text: `We don't talk\nthe way we used to.\n\nBut somehow,\nyou're still here.`}],
+  grief: [{title: "What Remains", text: `Some doors close\nwithout a sound.`}]
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const chatRef = ref(db, 'heartwords-chat');
+let allPoems = []; Object.keys(poemLibrary).forEach(k => allPoems.push(...poemLibrary[k]));
 
-  const chatMessages = document.getElementById('chatMessages');
-  onChildAdded(chatRef, (data) => {
-    const msg = data.val();
-    const myName = document.getElementById('chatName').value;
-    const div = document.createElement('div');
-    div.className = `chat-msg ${msg.name === myName ? 'you' : ''}`;
-    div.innerHTML = `<b>${msg.name}</b>: ${msg.text} <br><small style="opacity:0.7">${msg.time}</small>`;
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    if(chatMessages.innerText === "Connecting...") chatMessages.innerHTML = "";
-  });
-  window.sendChat = function() {
-    const name = document.getElementById('chatName').value || "Anonymous";
-    const text = document.getElementById('chatInput').value;
-    if(!text) return;
-    push(chatRef, { name: name, text: text, time: new Date().toLocaleTimeString() });
-    document.getElementById('chatInput').value = "";
-  }
+// #5 LINE BY LINE FADE
+function showPoem(poem) {
+  const lines = poem.text.split('\n');
+  let html = `<div class="poem-card"><b>${poem.title}</b><br><br>`;
+  lines.forEach((line, i) => html += `<div class="poem-line" style="animation-delay:${i*0.3}s">${line}</div>`);
+  html += `<br><button class="btn" onclick="shufflePoem()">↻ Give me another</button>`;
+  html += `<button class="btn" onclick="saveAsCard(\`${poem.text}\`)">🖼️ Save as Card</button>`;
+  html += `<button class="btn" onclick="savePoem('${poem.title}', \`${poem.text}\`)">♡ Save</button></div>`;
+  document.getElementById('poemOutput').innerHTML = html;
+}
 
-  // YOUR OLD V10 POEM CODE - UNTOUCHED
-  let poems = JSON.parse(localStorage.getItem('heartwords-poems')) || [
-    {id: 1, title: "Heaven Sent", author: "Anonymous", text: "You walked in like sunshine\nand made my grey days\nfeel like home.", category: "Love"},
-    {id: 2, title: "Empty Chair", author: "Anonymous", text: "The chair is still warm\nbut you are not here.", category: "Healing"}
-  ];
-  let heartwords = JSON.parse(localStorage.getItem('heartwords-liked')) || [];
+// #6 I DON'T KNOW
+function iDontKnow() {
+  document.body.style.background = '#dfe6e9';
+  document.getElementById('poemOutput').innerHTML = `<div class="poem-card">That's okay.<br>You don't need to name it yet.<br><br>Just an ordinary moment<br>being kind to me.</div>`;
+}
 
-  function savePoems(){ localStorage.setItem('heartwords-poems', JSON.stringify(poems)); }
-  function saveHearts(){ localStorage.setItem('heartwords-liked', JSON.stringify(heartwords)); }
-  function showTab(id,el){ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(id).classList.add('active'); el.classList.add('active'); }
-  function renderPoems(){ document.getElementById('poemsGrid').innerHTML = poems.map(p => `<div class="poem-card"><div class="heart-btn ${heartwords.includes(p.id)?'active':''}" onclick="toggleHeart(${p.id})">♥</div><h3 class="poem-title">${p.title}</h3><div class="poem-author">by ${p.author}</div><div class="poem-text">${p.text}</div></div>`).join(''); }
-  function renderHearts(){ document.getElementById('heartGrid').innerHTML = heartwords.length ? poems.filter(p=>heartwords.includes(p.id)).map(p=>`<div class="poem-card"><h3 class="poem-title">${p.title}</h3><div class="poem-text">${p.text}</div></div>`).join('') : '<div class="empty">No heartwords yet</div>'; }
-  function toggleHeart(id){ if(heartwords.includes(id)){heartwords=heartwords.filter(h=>h!=id)}else{heartwords.push(id)} saveHearts(); renderPoems(); renderHearts(); }
-  function addPoem(){ const t=document.getElementById('title').value; const a=document.getElementById('author').value; const txt=document.getElementById('text').value; if(!t||!txt)return alert('Fill title and poem'); poems.unshift({id:Date.now(),title:t,author:a||'Anonymous',text:txt,category:document.getElementById('category').value}); savePoems(); renderPoems(); alert('Published!'); }
-  
-  renderPoems(); renderHearts();
+// #7 ONE SENTENCE TO POEM
+function generatePoem() {
+  const story = document.getElementById('story').value;
+  if(!story) return;
+  showPoem({title: "For You", text: story + "\n\nAnd somehow,\nthat was beautiful."});
+}
+
+// #8 SHUFFLE
+function surpriseMe() { showPoem(allPoems[Math.floor(Math.random() * allPoems.length)]); }
+function shufflePoem() { surpriseMe(); }
+
+// #11 FINISH THOUGHT
+function finishThought(p) { document.getElementById('finishInput').value = p + " "; }
+function generateFinish() { showPoem({title: "Your Words", text: document.getElementById('finishInput').value}); }
+
+// #9 SAVE AS CARD 1080x1350
+function saveAsCard(text) {
+  const c = document.createElement('canvas'); c.width=1080; c.height=1350;
+  const ctx = c.getContext('2d'); ctx.fillStyle='#fff5f9'; ctx.fillRect(0,0,1080,1350);
+  ctx.fillStyle='#e91e63'; ctx.font='36px Georgia';
+  let lines = text.split('\n'); lines.forEach((l,i)=>ctx.fillText(l, 60, 200 + i*50));
+  window.open(c.toDataURL());
+}
+
+// #11 EMOTION MAP
+function pickEmotion(e) { document.getElementById('story').value = `I feel ${e}`; showTab('write', document.querySelector('.tab')); }
+
+// #10 LETTER
+function setLetterPrompt(p) { document.getElementById('letterText').value = "Dear Me,\n\n" + p + "\n\n"; }
+function saveLetter() { alert("Letter saved to your heart ❤️"); }
+
+// #3 SAVE
+function savePoem(t,txt) { let s=JSON.parse(localStorage.getItem('myHeartWords'))||[]; s.push({t,txt}); localStorage.setItem('myHeartWords',JSON.stringify(s)); renderMyWords(); }
+function renderMyWords() { let s=JSON.parse(localStorage.getItem('myHeartWords'))||[]; document.getElementById('myWords').innerHTML = s.map((p,i)=>`<div class="saved-poem"><span class="remove" onclick="remove(${i})">✕</span><b>${p.t}</b><br>${p.txt}</div>`).join(''); }
+function remove(i){ let s=JSON.parse(localStorage.getItem('myHeartWords'))||[]; s.splice(i,1); localStorage.setItem('myHeartWords',JSON.stringify(s)); renderMyWords(); }
+
+function filterWorld(c){ document.getElementById('worldPoems').innerHTML = (poemLibrary[c]||[]).map(p=>`<div class="poem-card"><b>${p.title}</b><br>${p.text.replace(/\n/g,'<br>')}</div>`).join(''); }
+function showCategory(c){ filterWorld(c); }
+function addFeeling(f){ document.getElementById('story').value += `\nIt feels ${f}.`; }
+
+function showTab(id,el){ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(id).classList.add('active'); el.classList.add('active'); }
+
+renderMyWords();
+
+// ===== FIREBASE LIVE CHAT FULL =====
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const chatRef = db.ref('heartwords_chat');
+const typingRef = db.ref('typing');
+firebase.auth().signInAnonymously();
+
+let userName = localStorage.getItem('heartwordsName') || "Anonymous" + Math.floor(Math.random()*1000);
+let userId = "user_" + Math.random().toString(36).substr(2,9);
+document.getElementById('usernameInput').value = userName;
+
+function setUsername() {
+  const input = document.getElementById('usernameInput').value.trim();
+  if(input === "") return alert("Please enter a name");
+  userName = input;
+  localStorage.setItem('heartwordsName', userName);
+  alert("Name saved as: " + userName + " 💖");
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const message = input.value.trim();
+  if(message === "") return;
+  chatRef.push({ name: userName, message: message, timestamp: firebase.database.ServerValue.TIMESTAMP, userId: userId });
+  input.value = "";
+  typingRef.child(userId).remove();
+}
+
+function deleteMessage(key) {
+  if(confirm("Delete this message?")){ chatRef.child(key).remove(); }
+}
+
+let typingTimeout;
+document.getElementById('chatInput').addEventListener('input', () => {
+  typingRef.child(userId).set(userName);
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => typingRef.child(userId).remove(), 2000);
+});
+
+chatRef.orderByChild('timestamp').limitToLast(50).on('child_added', (snapshot) => {
+  const data = snapshot.val(); const key = snapshot.key;
+  const chatBox = document.getElementById('chatMessages');
+  const time = data.timestamp? new Date(data.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+  const msgEl = document.createElement('div'); msgEl.className = "chat-msg"; msgEl.id = key;
+  let deleteBtn = '';
+  if(data.userId === userId){ deleteBtn = `<button class="btn delete" onclick="deleteMessage('${key}')">✕</button>`; }
+  msgEl.innerHTML = `<b style="color:#e91e63">${data.name}</b><span class="chat-meta">${time}</span>${deleteBtn}<br>${data.message}`;
+  chatBox.appendChild(msgEl); chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+typingRef.on('value', (snapshot) => {
+  const typingUsers = []; snapshot.forEach(child => { if(child.key!== userId) typingUsers.push(child.val()); });
+  document.getElementById('typingIndicator').innerText = typingUsers.length > 0? typingUsers.join(', ') + ' is typing...' : '';
+});
+
+document.getElementById('chatInput').addEventListener('keypress', e => { if(e.key === 'Enter') sendMessage(); });
+window.addEventListener('beforeunload', () => typingRef.child(userId).remove());
 </script>
 </body>
-    </html>
+        </html>
